@@ -46,7 +46,7 @@
                             <td>50</td>
                             <td><span class="badge badge-success">In Stock</span></td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                <a href="{{ route('admin.products.edit') }}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
                                 <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
@@ -59,7 +59,7 @@
                             <td>12</td>
                             <td><span class="badge badge-warning">Low Stock</span></td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                <a href="{{ route('admin.products.edit') }}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
                                 <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
@@ -72,7 +72,7 @@
                             <td>0</td>
                             <td><span class="badge badge-danger">Out of Stock</span></td>
                             <td>
-                                <a href="#" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
+                                <a href="{{ route('admin.products.edit') }}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i></a>
                                 <a href="#" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>

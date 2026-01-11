@@ -11,7 +11,7 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Users & Customers</h1>
     {{-- Only show this if the current logged in user has permission --}}
-    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+    <a href="{{ route('admin.users.create') }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
         <i class="fas fa-user-plus fa-sm text-white-50"></i> Create New Admin
     </a>
 </div>
@@ -30,7 +30,7 @@
                         <th>Email Address</th>
                         <th>Role</th>
                         <th>Registered Date</th>
-                        <th>Actions</th>
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -44,11 +44,7 @@
                         <td class="align-middle">douglas@example.com</td>
                         <td class="align-middle"><span class="badge badge-primary">Administrator</span></td>
                         <td class="align-middle">2023/01/15</td>
-                        <td class="align-middle">
-                             <a href="#" class="btn btn-light btn-sm border">
-                                <i class="fas fa-edit text-gray-600"></i>
-                            </a>
-                        </td>
+    
                     </tr>
                     <tr>
                          <td class="text-center">
@@ -60,12 +56,6 @@
                         <td class="align-middle">gavin@customer.com</td>
                         <td class="align-middle"><span class="badge badge-secondary">Customer</span></td>
                         <td class="align-middle">2023/06/22</td>
-                        <td class="align-middle">
-                            <a href="#" class="btn btn-light btn-sm border" title="View Profile or Edit">
-                                <i class="fas fa-edit text-gray-600"></i>
-                            </a>
-                             {{-- Add a ban/delete button depending on business logic --}}
-                        </td>
                     </tr>
                      {{-- End Loop --}}
                 </tbody>

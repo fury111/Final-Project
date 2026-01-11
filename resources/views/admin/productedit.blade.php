@@ -34,13 +34,6 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="description" class="font-weight-bold">Product Description</label>
-                        <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" placeholder="Enter product description here..." rows="4">{{ old('description') }}</textarea>
-                        @error('description')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
 
                     <div class="row">
                         <div class="col-md-6">
@@ -105,7 +98,7 @@
 
                     <div class="form-group mb-0">
                         <button type="submit" class="btn btn-primary px-4">
-                            <i class="fas fa-save mr-1"></i> Save Product
+                            <i class="fas fa-save mr-1"></i> Edit Product
                         </button>
                         <button type="reset" class="btn btn-light border px-4 ml-2">Reset</button>
                     </div>

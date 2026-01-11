@@ -41,7 +41,7 @@
                         <td>-</td>
                         <td><span class="badge badge-secondary">150 Items</span></td>
                         <td>
-                            <a href="#" class="btn btn-info btn-sm btn-icon-split">
+                            <a href="{{ route('admin.categories.edit') }}" class="btn btn-info btn-sm btn-icon-split">
                                 <span class="icon text-white-50"><i class="fas fa-edit"></i></span>
                                 <span class="text">Edit</span>
                             </a>
@@ -54,7 +54,7 @@
                         <td>Electronics</td>
                          <td><span class="badge badge-secondary">45 Items</span></td>
                         <td>
-                            <a href="#" class="btn btn-info btn-sm btn-icon-split">
+                            <a href="{{ route('admin.categories.edit') }}" class="btn btn-info btn-sm btn-icon-split">
                                 <span class="icon text-white-50"><i class="fas fa-edit"></i></span>
                                 <span class="text">Edit</span>
                             </a>
