@@ -1,14 +1,7 @@
-@extends('layouts.admin_master') <!-- Use the layout -->
-
-@section('title', 'Dashboard') <!-- Set the page title -->
-
-@section('css')
-    <!-- Optional: Add page-specific CSS here if needed -->
-    <!-- Example: <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet"> -->
-@endsection
+@extends('layouts.admin_master')
+@section('title', 'Orders Management')
 
 @section('content') 
-
 <h1 class="h3 mb-4 text-gray-800">Orders Management</h1>
 
 <div class="row mb-4">
@@ -24,13 +17,11 @@
             </div>
         </div>
     </div>
-    </div>
-
+</div>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <h6 class="m-0 font-weight-bold text-primary">Recent Orders</h6>
-        {{-- Optional: A dropdown for quick filtering could go here, like in the image example --}}
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -39,66 +30,70 @@
                     <tr>
                         <th>Order ID</th>
                         <th>Customer</th>
-                        <th>Date Placed</th>
                         <th>Total Amount</th>
-                        <th>Payment Status</th>
                         <th>Order Status</th>
-                        <th>Actions</th>
+                        <th style="width: 200px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- Replace with @foreach($orders as $order) --}}
                     <tr>
-                        <td><a href="#">#ORD-7829</a></td>
+                        <td>#ORD-7829</td>
                         <td>Douglas McGee</td>
-                        <td>2023/10/25 14:30</td>
                         <td class="font-weight-bold">$329.50</td>
-                        <td><span class="badge badge-success">Paid</span></td>
-                        <td><h5><span class="badge badge-warning">Pending</span></h5></td>
+                        <td><span class="badge badge-warning">Pending</span></td>
                         <td>
-                            <a href="{{-- route('orders.show', $order->id) --}}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye"></i> View
+                            <a href="#" class="btn btn-primary btn-sm" title="View Details">
+                                <i class="fas fa-eye"></i>
                             </a>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Update Status
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
+                                    <h6 class="dropdown-header">Mark as:</h6>
+                                    <a class="dropdown-item text-success" href="#" data-toggle="modal" data-target="#statusModal" data-order="#ORD-7829" data-action="Approve">
+                                        <i class="fas fa-check-circle fa-sm fa-fw mr-2"></i> Approve
+                                    </a>
+                                    <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#statusModal" data-order="#ORD-7829" data-action="Deny">
+                                        <i class="fas fa-times-circle fa-sm fa-fw mr-2"></i> Deny
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Mark as Shipped</a>
+                                </div>
+                            </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td><a href="#">#ORD-7828</a></td>
-                        <td>Gavin Joyce</td>
-                        <td>2023/10/24 09:15</td>
-                        <td class="font-weight-bold">$1,200.00</td>
-                        <td><span class="badge badge-success">Paid</span></td>
-                        <td><h5><span class="badge badge-info">Processing</span></h5></td>
-                        <td>
-                            <a href="#" class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye"></i> View
-                            </a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">#ORD-7827</a></td>
-                        <td>Jenna Smith</td>
-                        <td>2023/10/23 18:00</td>
-                        <td class="font-weight-bold">$55.00</td>
-                        <td><span class="badge badge-danger">Failed</span></td>
-                        <td><h5><span class="badge badge-danger">Cancelled</span></h5></td>
-                        <td>
-                            <a href="#" class="btn btn-primary btn-sm">
-                                <i class="fas fa-eye"></i> View
-                            </a>
-                        </td>
-                    </tr>
-                     {{-- End Loop --}}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content border-left-primary shadow">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold text-primary">Confirm Status Change</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to <span id="modalAction" class="font-weight-bold"></span> order <span id="modalOrderId" class="text-primary font-weight-bold"></span>?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-light" type="button" data-dismiss="modal">Cancel</button>
+                <form id="statusForm" action="#" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-primary">Confirm Change</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
-
 @section('js')
-   
-   <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
-   <script src="{{ asset('js/demo/chart-area-demo.js') }}"></script>
-   <script src="{{ asset('js/demo/chart-pie-demo.js') }}"></script>
+
 @endsection

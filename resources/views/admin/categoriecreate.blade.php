@@ -63,11 +63,8 @@
                     <hr>
 
                     <div class="form-group mb-0">
-                        <button type="submit" class="btn btn-primary btn-icon-split shadow-sm">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-check"></i>
-                            </span>
-                            <span class="text">Create Category</span>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-save mr-1"></i> Save Category
                         </button>
                     </div>
 

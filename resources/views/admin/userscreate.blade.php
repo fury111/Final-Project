@@ -91,9 +91,15 @@
                             <div class="input-group">
                                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                 <input type="password" id="password" class="form-control" placeholder="••••••••" name="password" minlength="8" required>
-                                <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                    <i class="fas fa-eye"></i>
-                                </button>
+                            </div>
+                            <div class="form-text mt-2">Must be at least 8 characters.</div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">Confirm Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" id="password" class="form-control" placeholder="••••••••" name="password" minlength="8" required>
                             </div>
                             <div class="form-text mt-2">Must be at least 8 characters.</div>
                         </div>
@@ -101,9 +107,9 @@
                         <hr class="my-4 opacity-25">
 
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-create">
-                                Create Admin Account
-                            </button>
+                            <button type="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-save mr-1"></i> Create Admin
+                        </button>
                             <a href="{{route('admin.users.index')}}" class="btn btn-link text-muted btn-sm text-decoration-none">Cancel and Return</a>
                         </div>
                     </form>

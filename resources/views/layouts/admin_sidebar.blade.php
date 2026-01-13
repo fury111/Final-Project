@@ -67,10 +67,7 @@
         <div id="collapseOrders" class="collapse" aria-labelledby="headingOrders" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded shadow-sm">
                 <h6 class="collapse-header">Order Status:</h6>
-                <a class="collapse-item" href="{{ route('admin.orders.index') }}">All Orders</a>
-                <a class="collapse-item" href="{{ route('admin.orders.index') }}">Approved orders</a>
-                <a class="collapse-item" href="{{ route('admin.orders.index') }}">Cancelled orders</a>
-                <a class="collapse-item" href="{{ route('admin.orders.index') }}">Pending orders</a>
+                <a class="collapse-item" href="{{ route('admin.orders.index') }}">Orders</a>
             </div>
         </div>
     </li>
@@ -85,11 +82,77 @@
             <div class="bg-white py-2 collapse-inner rounded shadow-sm">
                 <h6 class="collapse-header">User Roles:</h6>
                 <a class="collapse-item" href="{{ route('admin.users.index') }}">Customers</a>
-                <a class="collapse-item" href="{{ route('admin.users.index') }}">Administrators</a>
-                <a class="collapse-item" href="{{ route('admin.users.index') }}">Create an Administrator</a>
+                <a class="collapse-item" href="{{ route('admin.users.create') }}">Create an Administrator</a>
             </div>
         </div>
     </li>
+
+      <hr class="sidebar-divider">
+
+<div class="sidebar-heading">
+    Discounts and Promotions
+</div>
+
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCoupons"
+        aria-expanded="true" aria-controls="collapseCoupons">
+        <i class="fas fa-fw fa-ticket-alt"></i>
+        <span>Coupons</span>
+    </a>
+    <div id="collapseCoupons" class="collapse" aria-labelledby="headingCoupons" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded shadow-sm">
+            <h6 class="collapse-header">Manage Offers:</h6>
+            <a class="collapse-item" href="{{ route('admin.coupon.index') }}">Active Coupons</a>
+            <a class="collapse-item" href="{{ route('admin.coupon.create') }}">Create New Coupon</a>
+        </div>
+    </div>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link" href="{{ route('admin.promo.discounts') }}">
+        <i class="fas fa-fw fa-tags"></i>
+        <span>Item Discounts</span>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePromos"
+        aria-expanded="true" aria-controls="collapsePromos">
+        <i class="fas fa-fw fa-bullhorn"></i>
+        <span>Campaigns</span>
+    </a>
+    <div id="collapsePromos" class="collapse" aria-labelledby="headingPromos" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded shadow-sm">
+            <h6 class="collapse-header">Marketing:</h6>
+            <a class="collapse-item" href="{{ route('admin.promo.flashsales') }}">Flash Sales</a>
+            <a class="collapse-item" href="{{ route('admin.promo.index') }}">Promo Banners</a>
+        </div>
+    </div>
+</li>
+
+<hr class="sidebar-divider">
+
+<div class="sidebar-heading">
+    Ratings & Reviews
+</div>
+
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReviews"
+        aria-expanded="true" aria-controls="collapseReviews">
+        <i class="fas fa-fw fa-star-half-alt"></i>
+        <span>User Feedback</span>
+    </a>
+    <div id="collapseReviews" class="collapse" aria-labelledby="headingReviews" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded shadow-sm">
+            <h6 class="collapse-header">Manage Feedback:</h6>
+            <a class="collapse-item" href="{{ route('admin.promo.ratings') }}">Ratings</a>
+            <a class="collapse-item" href="{{ route('admin.promo.reviews') }}">Reviews</a>
+        </div>
+    </div>
+</li>
+    
+
+    
 
     <hr class="sidebar-divider d-none d-md-block">
 

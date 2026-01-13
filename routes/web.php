@@ -7,6 +7,57 @@ Route::prefix('admin')->name('admin.')->group(function () {
         return view('admin.dashboard');
     })->name('dashboard');
 
+    // Coupon Routes
+    Route::get('/coupon', function () {
+        return view('admin.coupon');
+    })->name('coupon.index');
+
+    Route::get('/coupon/create', function () {
+        return view('admin.couponcreate'); // Keeping your current naming
+    })->name('coupon.create');
+
+    Route::get('/coupon/edit', function () {
+        return view('admin.couponedit'); // Keeping your current naming
+    })->name('coupon.edit');
+
+    // Promo Routes
+    Route::get('/promo', function () {
+        return view('admin.promobanner'); // Keeping your current naming
+    })->name('promo.index');
+
+    Route::get('/promo/create', function () {
+        return view('admin.promobannercreate'); // Keeping your current naming
+    })->name('promo.create');
+
+    Route::get('/promo/edit', function () {
+        return view('admin.promobanneredit'); // Keeping your current naming
+    })->name('promo.edit');
+
+    // Flash Sales Routes
+    Route::get('/promo/flashsales', function () {
+        return view('admin.flashsale'); // Keeping your current naming
+    })->name('promo.flashsales');
+
+    Route::get('/promo/flashsales/create', function () {
+        return view('admin.flashsalescreate'); // Keeping your current naming
+    })->name('promo.flashsales.create');
+
+    Route::get('/promo/flashsales/edit', function () {
+        return view('admin.flashsalesedit'); // Keeping your current naming
+    })->name('promo.flashsales.edit');
+
+     Route::get('/promo/ratings', function () {
+        return view('admin.ratings'); // Keeping your current naming
+    })->name('promo.ratings');
+
+    Route::get('/promo/reviews', function () {
+        return view('admin.reviews'); // Keeping your current naming
+    })->name('promo.reviews');
+
+    Route::get('/promo/discounts', function () {
+        return view('admin.discounts'); // Keeping your current naming
+    })->name('promo.discounts');
+
     Route::get('/products', function () {
         return view('admin.products');
     })->name('products.index');
