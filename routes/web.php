@@ -97,4 +97,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
      Route::get('/users/profile', function () {
         return view('admin.adminprofile');
     })->name('users.profile');
+
+
+
+});
+
+Route::prefix('users')->name('users.')->group(function () {
+    Route::get('/landing', function () {
+        return view('users.landing');
+    })->name('landing');
+
 });
