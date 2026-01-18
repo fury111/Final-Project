@@ -61,7 +61,7 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="https://placehold.co/50x50/fff3cd/2D5A27?text=1" class="rounded me-2" alt="Organic Honey">
+                                            <img src="https://placehold.co/50x50/fff3cd/2D5A27?text=1  " class="rounded me-2" alt="Organic Honey">
                                             <span>Organic Honey (500g)</span>
                                         </div>
                                     </td>
@@ -71,7 +71,7 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="https://placehold.co/50x50/e8f5e9/2D5A27?text=2" class="rounded me-2" alt="Natural Soap Set">
+                                            <img src="https://placehold.co/50x50/e8f5e9/2D5A27?text=2  " class="rounded me-2" alt="Natural Soap Set">
                                             <span>Natural Soap Set</span>
                                         </div>
                                     </td>
@@ -81,7 +81,7 @@
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="https://placehold.co/50x50/c8e6c9/2D5A27?text=3" class="rounded me-2" alt="Green Tea Collection">
+                                            <img src="https://placehold.co/50x50/c8e6c9/2D5A27?text=3  " class="rounded me-2" alt="Green Tea Collection">
                                             <span>Green Tea Collection</span>
                                         </div>
                                     </td>
@@ -140,10 +140,10 @@
 
             <!-- Action Buttons -->
             <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-                <a href="/orders" class="btn btn-primary">
+                <a href="{{ route('orders') }}" class="btn btn-primary">
                     <i class="bi bi-list-ul me-2"></i>View Order History
                 </a>
-                <a href="/home" class="btn btn-outline-primary">
+                <a href="{{ route('home') }}" class="btn btn-outline-primary">
                     <i class="bi bi-shop me-2"></i>Continue Shopping
                 </a>
             </div>
@@ -155,7 +155,7 @@
                     A confirmation email has been sent to <strong>john.doe@example.com</strong>
                 </p>
                 <p class="text-muted small">
-                    Questions about your order? <a href="/contact" class="text-decoration-none">Contact Support</a>
+                    Questions about your order? <a href="{{ route('contact') }}" class="text-decoration-none">Contact Support</a>
                 </p>
             </div>
         </div>

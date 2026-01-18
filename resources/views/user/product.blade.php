@@ -46,9 +46,9 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item"><a href="/category">Shop</a></li>
-                <li class="breadcrumb-item"><a href="/category/groceries">Groceries</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('category') }}">Shop</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('category') }}/groceries">Groceries</a></li>
                 <li class="breadcrumb-item active">Organic Honey</li>
             </ol>
         </nav>
@@ -60,27 +60,27 @@
         <!-- Product Gallery -->
         <div class="col-lg-6">
             <div class="product-gallery">
-                <img src="https://placehold.co/600x450/fff3cd/2D5A27?text=Organic+Honey" 
+                <img src="https://placehold.co/600x450/fff3cd/2D5A27?text=Organic+Honey  " 
                      class="product-main-image" 
                      alt="Organic Honey" 
                      id="mainImage">
                 <div class="product-thumbnails">
-                    <img src="https://placehold.co/150x150/fff3cd/2D5A27?text=Front" 
+                    <img src="https://placehold.co/150x150/fff3cd/2D5A27?text=Front  " 
                          class="product-thumb active" 
                          alt="Front view"
-                         data-image="https://placehold.co/600x450/fff3cd/2D5A27?text=Front+View">
-                    <img src="https://placehold.co/150x150/ffecb3/2D5A27?text=Side" 
+                         data-image="https://placehold.co/600x450/fff3cd/2D5A27?text=Front+View  ">
+                    <img src="https://placehold.co/150x150/ffecb3/2D5A27?text=Side  " 
                          class="product-thumb" 
                          alt="Side view"
-                         data-image="https://placehold.co/600x450/ffecb3/2D5A27?text=Side+View">
-                    <img src="https://placehold.co/150x150/ffe082/2D5A27?text=Back" 
+                         data-image="https://placehold.co/600x450/ffecb3/2D5A27?text=Side+View  ">
+                    <img src="https://placehold.co/150x150/ffe082/2D5A27?text=Back  " 
                          class="product-thumb" 
                          alt="Back view"
-                         data-image="https://placehold.co/600x450/ffe082/2D5A27?text=Back+View">
-                    <img src="https://placehold.co/150x150/ffd54f/2D5A27?text=Detail" 
+                         data-image="https://placehold.co/600x450/ffe082/2D5A27?text=Back+View  ">
+                    <img src="https://placehold.co/150x150/ffd54f/2D5A27?text=Detail  " 
                          class="product-thumb" 
                          alt="Detail view"
-                         data-image="https://placehold.co/600x450/ffd54f/2D5A27?text=Detail+View">
+                         data-image="https://placehold.co/600x450/ffd54f/2D5A27?text=Detail+View  ">
                 </div>
             </div>
         </div>
@@ -129,7 +129,7 @@
                     </div>
                 </div>
                 <div class="flex-grow-1 d-flex flex-column justify-content-end">
-                    <a href="/cart" class="btn btn-primary btn-lg w-100">
+                    <a href="{{ route('cart') }}" class="btn btn-primary btn-lg w-100">
                         <i class="bi bi-cart-plus me-2"></i>Add to Cart
                     </a>
                 </div>
@@ -137,7 +137,7 @@
 
             <!-- Action Buttons -->
             <div class="d-flex gap-2 mb-4">
-                <a href="/checkout" class="btn btn-accent flex-grow-1">
+                <a href="{{ route('checkout') }}" class="btn btn-accent flex-grow-1">
                     <i class="bi bi-lightning-fill me-2"></i>Buy Now
                 </a>
                 <a href="/wishlist" class="btn btn-outline-secondary">
@@ -361,16 +361,16 @@
         <h4 class="mb-4">You May Also Like</h4>
         <div class="row g-4">
             <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Maple Syrup Pure', 'price' => 14.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/d7ccc8/2D5A27?text=Maple+Syrup', 'slug' => 'maple-syrup', 'stock' => 18]])
+                @include('components.product-card', ['product' => ['name' => 'Maple Syrup Pure', 'price' => 14.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/d7ccc8/2D5A27?text=Maple+Syrup  ', 'slug' => 'maple-syrup', 'stock' => 18]])
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Agave Nectar', 'price' => 9.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/c8e6c9/2D5A27?text=Agave', 'slug' => 'agave-nectar', 'stock' => 30]])
+                @include('components.product-card', ['product' => ['name' => 'Agave Nectar', 'price' => 9.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/c8e6c9/2D5A27?text=Agave  ', 'slug' => 'agave-nectar', 'stock' => 30]])
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Coconut Sugar', 'price' => 7.49, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/efebe9/2D5A27?text=Coconut+Sugar', 'slug' => 'coconut-sugar', 'stock' => 45]])
+                @include('components.product-card', ['product' => ['name' => 'Coconut Sugar', 'price' => 7.49, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/efebe9/2D5A27?text=Coconut+Sugar  ', 'slug' => 'coconut-sugar', 'stock' => 45]])
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Raw Cane Sugar', 'price' => 5.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/fff8e1/2D5A27?text=Cane+Sugar', 'slug' => 'raw-cane-sugar', 'stock' => 60]])
+                @include('components.product-card', ['product' => ['name' => 'Raw Cane Sugar', 'price' => 5.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/fff8e1/2D5A27?text=Cane+Sugar  ', 'slug' => 'raw-cane-sugar', 'stock' => 60]])
             </div>
         </div>
     </section>

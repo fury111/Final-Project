@@ -8,8 +8,8 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item"><a href="/cart">Cart</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('cart') }}">Cart</a></li>
                 <li class="breadcrumb-item active">Checkout</li>
             </ol>
         </nav>
@@ -169,7 +169,7 @@
                             <label class="form-check-label w-100" for="creditCard">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span><i class="bi bi-credit-card me-2"></i>Credit / Debit Card</span>
-                                    <img src="https://placehold.co/100x24/f5f5f5/999999?text=Cards" alt="Cards">
+                                    <img src="https://placehold.co/100x24/f5f5f5/999999?text=Cards  " alt="Cards">
                                 </div>
                             </label>
                         </div>
@@ -236,7 +236,7 @@
                     <div class="mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div class="d-flex align-items-center">
-                                <img src="https://placehold.co/50x50/fff3cd/2D5A27?text=1" class="rounded me-2" alt="Product" style="width: 50px; height: 50px; object-fit: cover;">
+                                <img src="https://placehold.co/50x50/fff3cd/2D5A27?text=1  " class="rounded me-2" alt="Product" style="width: 50px; height: 50px; object-fit: cover;">
                                 <div>
                                     <small class="d-block">Organic Honey</small>
                                     <small class="text-muted">x2</small>
@@ -246,7 +246,7 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div class="d-flex align-items-center">
-                                <img src="https://placehold.co/50x50/e8f5e9/2D5A27?text=2" class="rounded me-2" alt="Product" style="width: 50px; height: 50px; object-fit: cover;">
+                                <img src="https://placehold.co/50x50/e8f5e9/2D5A27?text=2  " class="rounded me-2" alt="Product" style="width: 50px; height: 50px; object-fit: cover;">
                                 <div>
                                     <small class="d-block">Natural Soap Set</small>
                                     <small class="text-muted">x1</small>
@@ -256,7 +256,7 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
-                                <img src="https://placehold.co/50x50/c8e6c9/2D5A27?text=3" class="rounded me-2" alt="Product" style="width: 50px; height: 50px; object-fit: cover;">
+                                <img src="https://placehold.co/50x50/c8e6c9/2D5A27?text=3  " class="rounded me-2" alt="Product" style="width: 50px; height: 50px; object-fit: cover;">
                                 <div>
                                     <small class="d-block">Green Tea Collection</small>
                                     <small class="text-muted">x1</small>
@@ -266,7 +266,7 @@
                         </div>
                     </div>
 
-                    <a href="/cart" class="small text-decoration-none"><i class="bi bi-pencil me-1"></i>Edit Cart</a>
+                    <a href="{{ route('cart') }}" class="small text-decoration-none"><i class="bi bi-pencil me-1"></i>Edit Cart</a>
 
                     <hr>
 
@@ -293,7 +293,7 @@
                         <strong class="fs-4" style="color: var(--dd-primary);">$58.30</strong>
                     </div>
 
-                    <a href="/confirmation" class="btn btn-primary btn-lg w-100">
+                    <a href="{{ route('order.confirm') }}" class="btn btn-primary btn-lg w-100">
                         <i class="bi bi-lock me-2"></i>Place Order
                     </a>
 

@@ -119,13 +119,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Still Have Questions -->
-            <div class="text-center mt-5 p-4 bg-light rounded">
-                <h5>Still have questions?</h5>
-                <p class="text-muted">Can't find the answer you're looking for? Please contact our support team.</p>
-                <a href="/contact" class="btn btn-primary">Contact Support</a>
+                <!-- Still Have Questions -->
+                <div class="text-center mt-5 p-4 bg-light rounded">
+                    <h5>Still have questions?</h5>
+                    <p class="text-muted">Can't find the answer you're looking for? Please contact our support team.</p>
+                    <a href="{{ route('contact') }}" class="btn btn-primary">Contact Support</a>
+                </div>
             </div>
         </div>
     </div>

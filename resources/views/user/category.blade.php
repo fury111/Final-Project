@@ -8,7 +8,7 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                 <li class="breadcrumb-item active">Shop All</li>
             </ol>
         </nav>
@@ -54,46 +54,46 @@
                 <span class="badge bg-light text-dark border me-2 px-3 py-2">
                     $0 - $50 <button type="button" class="btn-close ms-2" style="font-size: 0.5rem;"></button>
                 </span>
-                <a href="/category" class="small text-danger">Clear All</a>
+                <a href="{{ route('category') }}" class="small text-danger">Clear All</a>
             </div>
 
             <!-- Product Grid -->
             <div class="row g-4">
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Organic Honey', 'price' => 12.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/fff3cd/2D5A27?text=Honey', 'slug' => 'organic-honey', 'stock' => 25]])
+                    @include('components.product-card', ['product' => ['name' => 'Organic Honey', 'price' => 12.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/fff3cd/2D5A27?text=Honey  ', 'slug' => 'organic-honey', 'stock' => 25]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Natural Soap Set', 'price' => 18.50, 'old_price' => 24.99, 'category' => 'Personal Care', 'image' => 'https://placehold.co/400x300/e8f5e9/2D5A27?text=Soap+Set', 'slug' => 'natural-soap-set', 'stock' => 15, 'sale' => true]])
+                    @include('components.product-card', ['product' => ['name' => 'Natural Soap Set', 'price' => 18.50, 'old_price' => 24.99, 'category' => 'Personal Care', 'image' => 'https://placehold.co/400x300/e8f5e9/2D5A27?text=Soap+Set  ', 'slug' => 'natural-soap-set', 'stock' => 15, 'sale' => true]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Bamboo Toothbrush', 'price' => 4.99, 'category' => 'Personal Care', 'image' => 'https://placehold.co/400x300/e3f2fd/2D5A27?text=Toothbrush', 'slug' => 'bamboo-toothbrush', 'stock' => 50]])
+                    @include('components.product-card', ['product' => ['name' => 'Bamboo Toothbrush', 'price' => 4.99, 'category' => 'Personal Care', 'image' => 'https://placehold.co/400x300/e3f2fd/2D5A27?text=Toothbrush  ', 'slug' => 'bamboo-toothbrush', 'stock' => 50]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Green Tea Collection', 'price' => 15.99, 'category' => 'Beverages', 'image' => 'https://placehold.co/400x300/c8e6c9/2D5A27?text=Green+Tea', 'slug' => 'green-tea-collection', 'stock' => 8]])
+                    @include('components.product-card', ['product' => ['name' => 'Green Tea Collection', 'price' => 15.99, 'category' => 'Beverages', 'image' => 'https://placehold.co/400x300/c8e6c9/2D5A27?text=Green+Tea  ', 'slug' => 'green-tea-collection', 'stock' => 8]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Laundry Detergent', 'price' => 9.99, 'category' => 'Household', 'image' => 'https://placehold.co/400x300/bbdefb/2D5A27?text=Detergent', 'slug' => 'laundry-detergent', 'stock' => 30]])
+                    @include('components.product-card', ['product' => ['name' => 'Laundry Detergent', 'price' => 9.99, 'category' => 'Household', 'image' => 'https://placehold.co/400x300/bbdefb/2D5A27?text=Detergent  ', 'slug' => 'laundry-detergent', 'stock' => 30]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Dish Soap Bundle', 'price' => 7.50, 'category' => 'Household', 'image' => 'https://placehold.co/400x300/b2dfdb/2D5A27?text=Dish+Soap', 'slug' => 'dish-soap-bundle', 'stock' => 45]])
+                    @include('components.product-card', ['product' => ['name' => 'Dish Soap Bundle', 'price' => 7.50, 'category' => 'Household', 'image' => 'https://placehold.co/400x300/b2dfdb/2D5A27?text=Dish+Soap  ', 'slug' => 'dish-soap-bundle', 'stock' => 45]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Coffee Beans Premium', 'price' => 22.99, 'old_price' => 28.99, 'category' => 'Beverages', 'image' => 'https://placehold.co/400x300/d7ccc8/2D5A27?text=Coffee', 'slug' => 'coffee-beans-premium', 'stock' => 5, 'sale' => true]])
+                    @include('components.product-card', ['product' => ['name' => 'Coffee Beans Premium', 'price' => 22.99, 'old_price' => 28.99, 'category' => 'Beverages', 'image' => 'https://placehold.co/400x300/d7ccc8/2D5A27?text=Coffee  ', 'slug' => 'coffee-beans-premium', 'stock' => 5, 'sale' => true]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Mixed Nuts Pack', 'price' => 14.99, 'category' => 'Snacks', 'image' => 'https://placehold.co/400x300/ffe0b2/2D5A27?text=Mixed+Nuts', 'slug' => 'mixed-nuts-pack', 'stock' => 20]])
+                    @include('components.product-card', ['product' => ['name' => 'Mixed Nuts Pack', 'price' => 14.99, 'category' => 'Snacks', 'image' => 'https://placehold.co/400x300/ffe0b2/2D5A27?text=Mixed+Nuts  ', 'slug' => 'mixed-nuts-pack', 'stock' => 20]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'All-Purpose Cleaner', 'price' => 5.99, 'category' => 'Household', 'image' => 'https://placehold.co/400x300/e8eaf6/2D5A27?text=Cleaner', 'slug' => 'all-purpose-cleaner', 'stock' => 40]])
+                    @include('components.product-card', ['product' => ['name' => 'All-Purpose Cleaner', 'price' => 5.99, 'category' => 'Household', 'image' => 'https://placehold.co/400x300/e8eaf6/2D5A27?text=Cleaner  ', 'slug' => 'all-purpose-cleaner', 'stock' => 40]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Facial Tissues Box', 'price' => 3.49, 'category' => 'Household', 'image' => 'https://placehold.co/400x300/fce4ec/2D5A27?text=Tissues', 'slug' => 'facial-tissues', 'stock' => 100]])
+                    @include('components.product-card', ['product' => ['name' => 'Facial Tissues Box', 'price' => 3.49, 'category' => 'Household', 'image' => 'https://placehold.co/400x300/fce4ec/2D5A27?text=Tissues  ', 'slug' => 'facial-tissues', 'stock' => 100]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Olive Oil Extra Virgin', 'price' => 16.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/f0f4c3/2D5A27?text=Olive+Oil', 'slug' => 'olive-oil', 'stock' => 22]])
+                    @include('components.product-card', ['product' => ['name' => 'Olive Oil Extra Virgin', 'price' => 16.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/f0f4c3/2D5A27?text=Olive+Oil  ', 'slug' => 'olive-oil', 'stock' => 22]])
                 </div>
                 <div class="col-6 col-md-4">
-                    @include('components.product-card', ['product' => ['name' => 'Orange Juice 1L', 'price' => 4.99, 'category' => 'Beverages', 'image' => 'https://placehold.co/400x300/ffcc80/2D5A27?text=OJ', 'slug' => 'orange-juice', 'stock' => 0]])
+                    @include('components.product-card', ['product' => ['name' => 'Orange Juice 1L', 'price' => 4.99, 'category' => 'Beverages', 'image' => 'https://placehold.co/400x300/ffcc80/2D5A27?text=OJ  ', 'slug' => 'orange-juice', 'stock' => 0]])
                 </div>
             </div>
 

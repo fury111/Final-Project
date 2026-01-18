@@ -8,8 +8,8 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item"><a href="/account">My Account</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('account') }}">My Account</a></li>
                 <li class="breadcrumb-item active">Orders</li>
             </ol>
         </nav>
@@ -27,7 +27,7 @@
         <div class="col-lg-9">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h4 class="mb-0">Order History</h4>
-                <a href="/category" class="btn btn-primary btn-sm">
+                <a href="{{ route('category') }}" class="btn btn-primary btn-sm">
                     <i class="bi bi-plus-lg me-2"></i>New Order
                 </a>
             </div>
@@ -51,7 +51,7 @@
                                 <!-- Order 1 - Processing -->
                                 <tr>
                                     <td class="ps-4">
-                                        <a href="/order-detail" class="text-decoration-none fw-semibold">#DD-2026-0458</a>
+                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold">#DD-2026-0458</a>
                                     </td>
                                     <td>Jan 15, 2026</td>
                                     <td>4 items</td>
@@ -60,7 +60,7 @@
                                         <span class="badge bg-info"><i class="bi bi-hourglass-split me-1"></i>Processing</span>
                                     </td>
                                     <td class="text-end pe-4">
-                                        <a href="/order-detail" class="btn btn-sm btn-outline-primary me-1">View</a>
+                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-primary me-1">View</a>
                                         <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
                                             Cancel
                                         </button>
@@ -70,7 +70,7 @@
                                 <!-- Order 2 - Shipped -->
                                 <tr>
                                     <td class="ps-4">
-                                        <a href="/order-detail" class="text-decoration-none fw-semibold">#DD-2026-0421</a>
+                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold">#DD-2026-0421</a>
                                     </td>
                                     <td>Jan 10, 2026</td>
                                     <td>2 items</td>
@@ -79,7 +79,7 @@
                                         <span class="badge bg-primary"><i class="bi bi-truck me-1"></i>Shipped</span>
                                     </td>
                                     <td class="text-end pe-4">
-                                        <a href="/order-detail" class="btn btn-sm btn-outline-primary me-1">View</a>
+                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-primary me-1">View</a>
                                         <a href="#" class="btn btn-sm btn-outline-secondary">Track</a>
                                     </td>
                                 </tr>
@@ -87,7 +87,7 @@
                                 <!-- Order 3 - Delivered -->
                                 <tr>
                                     <td class="ps-4">
-                                        <a href="/order-detail" class="text-decoration-none fw-semibold">#DD-2026-0398</a>
+                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold">#DD-2026-0398</a>
                                     </td>
                                     <td>Jan 5, 2026</td>
                                     <td>3 items</td>
@@ -96,15 +96,15 @@
                                         <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Delivered</span>
                                     </td>
                                     <td class="text-end pe-4">
-                                        <a href="/order-detail" class="btn btn-sm btn-outline-primary me-1">View</a>
-                                        <a href="/cart" class="btn btn-sm btn-outline-success">Reorder</a>
+                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-primary me-1">View</a>
+                                        <a href="{{ route('cart') }}" class="btn btn-sm btn-outline-success">Reorder</a>
                                     </td>
                                 </tr>
                                 
                                 <!-- Order 4 - Delivered -->
                                 <tr>
                                     <td class="ps-4">
-                                        <a href="/order-detail" class="text-decoration-none fw-semibold">#DD-2025-1245</a>
+                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold">#DD-2025-1245</a>
                                     </td>
                                     <td>Dec 28, 2025</td>
                                     <td>1 item</td>
@@ -113,15 +113,15 @@
                                         <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Delivered</span>
                                     </td>
                                     <td class="text-end pe-4">
-                                        <a href="/order-detail" class="btn btn-sm btn-outline-primary me-1">View</a>
-                                        <a href="/cart" class="btn btn-sm btn-outline-success">Reorder</a>
+                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-primary me-1">View</a>
+                                        <a href="{{ route('cart') }}" class="btn btn-sm btn-outline-success">Reorder</a>
                                     </td>
                                 </tr>
                                 
                                 <!-- Order 5 - Cancelled -->
                                 <tr class="table-secondary">
                                     <td class="ps-4">
-                                        <a href="/order-detail" class="text-decoration-none fw-semibold text-muted">#DD-2025-1198</a>
+                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold text-muted">#DD-2025-1198</a>
                                     </td>
                                     <td class="text-muted">Dec 20, 2025</td>
                                     <td class="text-muted">2 items</td>
@@ -130,7 +130,7 @@
                                         <span class="badge bg-secondary"><i class="bi bi-x-lg me-1"></i>Cancelled</span>
                                     </td>
                                     <td class="text-end pe-4">
-                                        <a href="/order-detail" class="btn btn-sm btn-outline-secondary">View</a>
+                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-secondary">View</a>
                                     </td>
                                 </tr>
                             </tbody>

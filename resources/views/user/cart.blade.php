@@ -8,7 +8,7 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                 <li class="breadcrumb-item active">Shopping Cart</li>
             </ol>
         </nav>
@@ -26,7 +26,7 @@
                 <div class="card-body p-0">
                     <!-- Item 1 -->
                     <div class="d-flex p-3 border-bottom">
-                        <img src="https://placehold.co/100x100/fff3cd/2D5A27?text=Honey" 
+                        <img src="https://placehold.co/100x100/fff3cd/2D5A27?text=Honey  " 
                              class="rounded me-3" 
                              alt="Organic Honey"
                              style="width: 100px; height: 100px; object-fit: cover;">
@@ -34,7 +34,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h6 class="mb-1">
-                                        <a href="/product/organic-honey" class="text-decoration-none text-dark">Organic Honey</a>
+                                        <a href="{{ route('product') }}" class="text-decoration-none text-dark">Organic Honey</a>
                                     </h6>
                                     <small class="text-muted">500g jar</small>
                                 </div>
@@ -59,7 +59,7 @@
 
                     <!-- Item 2 -->
                     <div class="d-flex p-3 border-bottom">
-                        <img src="https://placehold.co/100x100/e8f5e9/2D5A27?text=Soap" 
+                        <img src="https://placehold.co/100x100/e8f5e9/2D5A27?text=Soap  " 
                              class="rounded me-3" 
                              alt="Natural Soap Set"
                              style="width: 100px; height: 100px; object-fit: cover;">
@@ -67,7 +67,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h6 class="mb-1">
-                                        <a href="/product/natural-soap-set" class="text-decoration-none text-dark">Natural Soap Set</a>
+                                        <a href="{{ route('product') }}" class="text-decoration-none text-dark">Natural Soap Set</a>
                                     </h6>
                                     <small class="text-muted">3-piece set</small>
                                     <span class="badge bg-danger ms-2">SALE</span>
@@ -96,7 +96,7 @@
 
                     <!-- Item 3 -->
                     <div class="d-flex p-3 border-bottom">
-                        <img src="https://placehold.co/100x100/c8e6c9/2D5A27?text=Tea" 
+                        <img src="https://placehold.co/100x100/c8e6c9/2D5A27?text=Tea  " 
                              class="rounded me-3" 
                              alt="Green Tea Collection"
                              style="width: 100px; height: 100px; object-fit: cover;">
@@ -104,7 +104,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h6 class="mb-1">
-                                        <a href="/product/green-tea-collection" class="text-decoration-none text-dark">Green Tea Collection</a>
+                                        <a href="{{ route('product') }}" class="text-decoration-none text-dark">Green Tea Collection</a>
                                     </h6>
                                     <small class="text-muted">20 tea bags</small>
                                 </div>
@@ -129,7 +129,7 @@
 
                     <!-- Item 4 -->
                     <div class="d-flex p-3">
-                        <img src="https://placehold.co/100x100/bbdefb/2D5A27?text=Detergent" 
+                        <img src="https://placehold.co/100x100/bbdefb/2D5A27?text=Detergent  " 
                              class="rounded me-3" 
                              alt="Laundry Detergent"
                              style="width: 100px; height: 100px; object-fit: cover;">
@@ -137,7 +137,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h6 class="mb-1">
-                                        <a href="/product/laundry-detergent" class="text-decoration-none text-dark">Laundry Detergent</a>
+                                        <a href="{{ route('product') }}" class="text-decoration-none text-dark">Laundry Detergent</a>
                                     </h6>
                                     <small class="text-muted">2L bottle</small>
                                 </div>
@@ -164,7 +164,7 @@
 
             <!-- Continue Shopping -->
             <div class="mt-3 d-flex justify-content-between">
-                <a href="/category" class="btn btn-outline-primary">
+                <a href="{{ route('category') }}" class="btn btn-outline-primary">
                     <i class="bi bi-arrow-left me-2"></i>Continue Shopping
                 </a>
                 <button class="btn btn-outline-danger">
@@ -212,7 +212,7 @@
                             <strong class="fs-4" style="color: var(--dd-primary);">$69.09</strong>
                         </div>
 
-                        <a href="/checkout" class="btn btn-primary btn-lg w-100">
+                        <a href="{{ route('checkout') }}" class="btn btn-primary btn-lg w-100">
                             Proceed to Checkout
                         </a>
                     </div>
@@ -225,7 +225,7 @@
                     <i class="bi bi-shield-lock me-1"></i>Secure checkout
                 </small>
                 <div class="mt-2">
-                    <img src="https://placehold.co/200x30/f5f5f5/999999?text=Payment+Methods" alt="Payment methods" class="img-fluid">
+                    <img src="https://placehold.co/200x30/f5f5f5/999999?text=Payment+Methods  " alt="Payment methods" class="img-fluid">
                 </div>
             </div>
 
@@ -244,16 +244,16 @@
         <h4 class="mb-4">You May Also Like</h4>
         <div class="row g-4">
             <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Olive Oil Extra Virgin', 'price' => 16.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/f0f4c3/2D5A27?text=Olive+Oil', 'slug' => 'olive-oil', 'stock' => 22]])
+                @include('components.product-card', ['product' => ['name' => 'Olive Oil Extra Virgin', 'price' => 16.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/f0f4c3/2D5A27?text=Olive+Oil  ', 'slug' => 'olive-oil', 'stock' => 22]])
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Bamboo Toothbrush', 'price' => 4.99, 'category' => 'Personal Care', 'image' => 'https://placehold.co/400x300/e3f2fd/2D5A27?text=Toothbrush', 'slug' => 'bamboo-toothbrush', 'stock' => 50]])
+                @include('components.product-card', ['product' => ['name' => 'Bamboo Toothbrush', 'price' => 4.99, 'category' => 'Personal Care', 'image' => 'https://placehold.co/400x300/e3f2fd/2D5A27?text=Toothbrush  ', 'slug' => 'bamboo-toothbrush', 'stock' => 50]])
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Coffee Beans Premium', 'price' => 22.99, 'old_price' => 28.99, 'category' => 'Beverages', 'image' => 'https://placehold.co/400x300/d7ccc8/2D5A27?text=Coffee', 'slug' => 'coffee-beans-premium', 'stock' => 5, 'sale' => true]])
+                @include('components.product-card', ['product' => ['name' => 'Coffee Beans Premium', 'price' => 22.99, 'old_price' => 28.99, 'category' => 'Beverages', 'image' => 'https://placehold.co/400x300/d7ccc8/2D5A27?text=Coffee  ', 'slug' => 'coffee-beans-premium', 'stock' => 5, 'sale' => true]])
             </div>
             <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Mixed Nuts Pack', 'price' => 14.99, 'category' => 'Snacks', 'image' => 'https://placehold.co/400x300/ffe0b2/2D5A27?text=Mixed+Nuts', 'slug' => 'mixed-nuts-pack', 'stock' => 20]])
+                @include('components.product-card', ['product' => ['name' => 'Mixed Nuts Pack', 'price' => 14.99, 'category' => 'Snacks', 'image' => 'https://placehold.co/400x300/ffe0b2/2D5A27?text=Mixed+Nuts  ', 'slug' => 'mixed-nuts-pack', 'stock' => 20]])
             </div>
         </div>
     </section>

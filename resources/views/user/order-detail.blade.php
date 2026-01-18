@@ -8,8 +8,8 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item"><a href="/orders">My Orders</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('orders') }}">My Orders</a></li>
                 <li class="breadcrumb-item active">Order #DD-2026-0458</li>
             </ol>
         </nav>
@@ -90,9 +90,9 @@
                                 <tr>
                                     <td class="ps-4">
                                         <div class="d-flex align-items-center">
-                                            <img src="https://placehold.co/60x60/fff3cd/2D5A27?text=1" class="rounded me-3" alt="Organic Honey">
+                                            <img src="https://placehold.co/60x60/fff3cd/2D5A27?text=1  " class="rounded me-3" alt="Organic Honey">
                                             <div>
-                                                <a href="/product/organic-honey" class="text-decoration-none fw-semibold">Organic Honey</a>
+                                                <a href="{{ route('product') }}" class="text-decoration-none fw-semibold">Organic Honey</a>
                                                 <small class="text-muted d-block">500g jar</small>
                                             </div>
                                         </div>
@@ -104,9 +104,9 @@
                                 <tr>
                                     <td class="ps-4">
                                         <div class="d-flex align-items-center">
-                                            <img src="https://placehold.co/60x60/e8f5e9/2D5A27?text=2" class="rounded me-3" alt="Natural Soap Set">
+                                            <img src="https://placehold.co/60x60/e8f5e9/2D5A27?text=2  " class="rounded me-3" alt="Natural Soap Set">
                                             <div>
-                                                <a href="/product/natural-soap-set" class="text-decoration-none fw-semibold">Natural Soap Set</a>
+                                                <a href="{{ route('product') }}" class="text-decoration-none fw-semibold">Natural Soap Set</a>
                                                 <small class="text-muted d-block">3-piece set</small>
                                             </div>
                                         </div>
@@ -118,9 +118,9 @@
                                 <tr>
                                     <td class="ps-4">
                                         <div class="d-flex align-items-center">
-                                            <img src="https://placehold.co/60x60/c8e6c9/2D5A27?text=3" class="rounded me-3" alt="Green Tea Collection">
+                                            <img src="https://placehold.co/60x60/c8e6c9/2D5A27?text=3  " class="rounded me-3" alt="Green Tea Collection">
                                             <div>
-                                                <a href="/product/green-tea-collection" class="text-decoration-none fw-semibold">Green Tea Collection</a>
+                                                <a href="{{ route('product') }}" class="text-decoration-none fw-semibold">Green Tea Collection</a>
                                                 <small class="text-muted d-block">20 tea bags</small>
                                             </div>
                                         </div>
@@ -189,13 +189,13 @@
 
             <!-- Actions -->
             <div class="mt-4 d-flex gap-2">
-                <a href="/orders" class="btn btn-outline-primary">
+                <a href="{{ route('orders') }}" class="btn btn-outline-primary">
                     <i class="bi bi-arrow-left me-2"></i>Back to Orders
                 </a>
                 <button class="btn btn-outline-danger">
                     <i class="bi bi-x-circle me-2"></i>Cancel Order
                 </button>
-                <a href="/contact" class="btn btn-outline-secondary ms-auto">
+                <a href="{{ route('contact') }}" class="btn btn-outline-secondary ms-auto">
                     <i class="bi bi-headset me-2"></i>Need Help?
                 </a>
             </div>

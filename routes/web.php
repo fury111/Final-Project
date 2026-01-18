@@ -102,119 +102,81 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 });
 
-Route::prefix('users')->name('users.')->group(function () {
-    Route::get('/landing', function () {
-        return view('users.landing');
-    })->name('landing');
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->name('forgot-password');
 
-});
-
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('user.home');
 })->name('home');
 
-Route::get('/welcome', function () {
-    return view('user.welcome');
-})->name('welcome');
-
-// About Page
 Route::get('/about', function () {
     return view('user.about');
 })->name('about');
 
-// Contact Page
+Route::get('/account', function () {
+    return view('user.account');
+})->name('account');
+
+Route::get('/addresses', function () {
+    return view('user.addresses');
+})->name('addresses');
+
+Route::get('/cart', function () {
+    return view('user.cart');
+})->name('cart');
+
+Route::get('/category', function () {
+    return view('user.category');
+})->name('category');
+
+Route::get('/checkout', function () {
+    return view('user.checkout');
+})->name('checkout');
+
+Route::get('/confirmation', function () {
+    return view('user.confirmation');
+})->name('confirmation');
+
 Route::get('/contact', function () {
     return view('user.contact');
 })->name('contact');
 
-// FAQ Page
-Route::get('/faq', function () {
-    return view('user.faq');
-})->name('faq');
-
-// Deals / Promotions Page
 Route::get('/deals', function () {
     return view('user.deals');
 })->name('deals');
 
-// Category Pages (Dynamic or Static)
-Route::get('/category/{slug}', function ($slug) {
-    return view('user.category', ['slug' => $slug]);
-})->name('category.show');
+Route::get('/faq', function () {
+    return view('user.faq');
+})->name('faq');
 
-// Product Pages
-Route::get('/product/{id}', function ($id) {
-    return view('user.product', ['id' => $id]);
-})->name('product.show');
+Route::get('/order-detail', function () {
+    return view('user.order-detail');
+})->name('order.detail');
 
-// Shop / All Products
-Route::get('/shop', function () {
-    return view('user.shop');
-})->name('shop');
+Route::get('/orders', function () {
+    return view('user.orders');
+})->name('orders');
 
-// Cart Page
-Route::get('/cart', function () {
-    return view('user.cart');
-})->name('cart.index');
+Route::get('/product', function () {
+    return view('user.product');
+})->name('product');
 
-// Checkout Page
-Route::get('/checkout', function () {
-    return view('user.checkout');
-})->name('checkout.index');
+Route::get('/wishlist', function () {
+    return view('user.wishlist');
+})->name('wishlist');
 
-// Order Confirmation
-Route::get('/order/confirm', function () {
-    return view('user.confirmation');
-})->name('order.confirm');
+// ========================
+// OPTIONAL: Fallback Route
+// ========================
 
-// User Account / Profile
-Route::middleware(['auth'])->group(function () {
-    Route::get('/account', function () {
-        return view('user.account');
-    })->name('account.index');
 
-    Route::get('/orders', function () {
-        return view('user.orders');
-    })->name('orders.index');
-
-    Route::get('/addresses', function () {
-        return view('user.addresses');
-    })->name('addresses.index');
-
-    Route::get('/wishlist', function () {
-        return view('user.wishlist');
-    })->name('wishlist.index');
-
-    Route::get('/order/{id}', function ($id) {
-        return view('user.order-detail', ['id' => $id]);
-    })->name('order.show');
-});
-
-// Login / Register / Auth Routes (if not using Breeze)
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
-})->name('password.request');
-
-// Optional: Logout route (if not using Laravel's built-in)
-Route::post('/logout', function () {
-    auth()->logout();
-    return redirect()->route('home');
-})->name('logout');
-
-// Search Route
-Route::get('/search', function () {
-    return view('user.search');
-})->name('search');
-
-// 404 Page (Optional)
 Route::fallback(function () {
     return view('errors.404');
 });

@@ -16,7 +16,7 @@
     <section class="mb-5">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
-                <img src="https://placehold.co/600x400/e8f5e9/2D5A27?text=Our+Story" class="img-fluid rounded shadow-sm" alt="Our Story">
+                <img src="https://placehold.co/600x400/e8f5e9/2D5A27?text=Our+Story  " class="img-fluid rounded shadow-sm" alt="Our Story">
             </div>
             <div class="col-lg-6">
                 <h2 class="h3 mb-4">Our Story</h2>
@@ -96,7 +96,7 @@
             <div class="col-6 col-md-3">
                 <div class="card text-center border-0">
                     <div class="card-body">
-                        <img src="https://placehold.co/150x150/e8f5e9/2D5A27?text=JD" class="rounded-circle mb-3" alt="Team Member">
+                        <img src="https://placehold.co/150x150/e8f5e9/2D5A27?text=JD  " class="rounded-circle mb-3" alt="Team Member">
                         <h6 class="mb-1">Jane Doe</h6>
                         <small class="text-muted">CEO & Founder</small>
                     </div>
@@ -105,7 +105,7 @@
             <div class="col-6 col-md-3">
                 <div class="card text-center border-0">
                     <div class="card-body">
-                        <img src="https://placehold.co/150x150/e3f2fd/2D5A27?text=MS" class="rounded-circle mb-3" alt="Team Member">
+                        <img src="https://placehold.co/150x150/e3f2fd/2D5A27?text=MS  " class="rounded-circle mb-3" alt="Team Member">
                         <h6 class="mb-1">Mike Smith</h6>
                         <small class="text-muted">Operations Manager</small>
                     </div>
@@ -114,7 +114,7 @@
             <div class="col-6 col-md-3">
                 <div class="card text-center border-0">
                     <div class="card-body">
-                        <img src="https://placehold.co/150x150/fff3e0/2D5A27?text=SJ" class="rounded-circle mb-3" alt="Team Member">
+                        <img src="https://placehold.co/150x150/fff3e0/2D5A27?text=SJ  " class="rounded-circle mb-3" alt="Team Member">
                         <h6 class="mb-1">Sarah Johnson</h6>
                         <small class="text-muted">Marketing Lead</small>
                     </div>
@@ -123,7 +123,7 @@
             <div class="col-6 col-md-3">
                 <div class="card text-center border-0">
                     <div class="card-body">
-                        <img src="https://placehold.co/150x150/fce4ec/2D5A27?text=AC" class="rounded-circle mb-3" alt="Team Member">
+                        <img src="https://placehold.co/150x150/fce4ec/2D5A27?text=AC  " class="rounded-circle mb-3" alt="Team Member">
                         <h6 class="mb-1">Alex Chen</h6>
                         <small class="text-muted">Customer Support</small>
                     </div>

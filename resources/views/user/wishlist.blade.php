@@ -8,7 +8,7 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                 <li class="breadcrumb-item active">Wishlist</li>
             </ol>
         </nav>
@@ -28,7 +28,7 @@
                 <div class="card-body p-0">
                     <!-- Item 1 -->
                     <div class="d-flex p-3 border-bottom">
-                        <img src="https://placehold.co/100x100/fff3cd/2D5A27?text=Honey" 
+                        <img src="https://placehold.co/100x100/fff3cd/2D5A27?text=Honey  " 
                              class="rounded me-3" 
                              alt="Organic Honey"
                              style="width: 100px; height: 100px; object-fit: cover;">
@@ -36,7 +36,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h6 class="mb-1">
-                                        <a href="/product/organic-honey" class="text-decoration-none text-dark">Organic Honey</a>
+                                        <a href="{{ route('product') }}" class="text-decoration-none text-dark">Organic Honey</a>
                                     </h6>
                                     <small class="text-muted">Groceries</small>
                                     <div class="mt-1">
@@ -49,7 +49,7 @@
                             </div>
                             <div class="d-flex justify-content-between align-items-end mt-2">
                                 <span class="fw-bold" style="color: var(--dd-primary);">$12.99</span>
-                                <a href="/cart" class="btn btn-primary btn-sm">
+                                <a href="{{ route('cart') }}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-cart-plus me-1"></i>Add to Cart
                                 </a>
                             </div>
@@ -58,7 +58,7 @@
 
                     <!-- Item 2 -->
                     <div class="d-flex p-3 border-bottom">
-                        <img src="https://placehold.co/100x100/d7ccc8/2D5A27?text=Coffee" 
+                        <img src="https://placehold.co/100x100/d7ccc8/2D5A27?text=Coffee  " 
                              class="rounded me-3" 
                              alt="Coffee Beans Premium"
                              style="width: 100px; height: 100px; object-fit: cover;">
@@ -66,7 +66,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h6 class="mb-1">
-                                        <a href="/product/coffee-beans-premium" class="text-decoration-none text-dark">Coffee Beans Premium</a>
+                                        <a href="{{ route('product') }}" class="text-decoration-none text-dark">Coffee Beans Premium</a>
                                     </h6>
                                     <small class="text-muted">Beverages</small>
                                     <span class="badge bg-danger ms-2">SALE</span>
@@ -83,7 +83,7 @@
                                     <span class="text-muted text-decoration-line-through small">$28.99</span>
                                     <span class="fw-bold ms-1" style="color: var(--dd-primary);">$22.99</span>
                                 </div>
-                                <a href="/cart" class="btn btn-primary btn-sm">
+                                <a href="{{ route('cart') }}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-cart-plus me-1"></i>Add to Cart
                                 </a>
                             </div>
@@ -92,7 +92,7 @@
 
                     <!-- Item 3 -->
                     <div class="d-flex p-3">
-                        <img src="https://placehold.co/100x100/ffcc80/2D5A27?text=OJ" 
+                        <img src="https://placehold.co/100x100/ffcc80/2D5A27?text=OJ  " 
                              class="rounded me-3" 
                              alt="Orange Juice"
                              style="width: 100px; height: 100px; object-fit: cover;">
@@ -100,7 +100,7 @@
                             <div class="d-flex justify-content-between">
                                 <div>
                                     <h6 class="mb-1">
-                                        <a href="/product/orange-juice" class="text-decoration-none text-dark">Orange Juice 1L</a>
+                                        <a href="{{ route('product') }}" class="text-decoration-none text-dark">Orange Juice 1L</a>
                                     </h6>
                                     <small class="text-muted">Beverages</small>
                                     <div class="mt-1">
@@ -124,10 +124,10 @@
 
             <!-- Actions -->
             <div class="mt-3 d-flex justify-content-between">
-                <a href="/category" class="btn btn-outline-primary">
+                <a href="{{ route('category') }}" class="btn btn-outline-primary">
                     <i class="bi bi-arrow-left me-2"></i>Continue Shopping
                 </a>
-                <a href="/cart" class="btn btn-primary">
+                <a href="{{ route('cart') }}" class="btn btn-primary">
                     <i class="bi bi-cart-plus me-2"></i>Add All to Cart
                 </a>
             </div>
@@ -140,7 +140,7 @@
                     <i class="bi bi-heart fs-1 text-danger mb-3"></i>
                     <h5>Your Wishlist</h5>
                     <p class="text-muted small">Save your favorite items and come back to them later. Items in your wishlist won't be reserved.</p>
-                    <a href="/account" class="btn btn-outline-primary btn-sm">View Account</a>
+                    <a href="{{ route('account') }}" class="btn btn-outline-primary btn-sm">View Account</a>
                 </div>
             </div>
 
