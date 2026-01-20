@@ -172,6 +172,11 @@ Route::get('/wishlist', function () {
     return view('user.wishlist');
 })->name('wishlist');
 
+Route::get('/product-page', function () {
+    return view('user.product-page');
+})->name('product.page');
+
+
 // ========================
 // OPTIONAL: Fallback Route
 // ========================

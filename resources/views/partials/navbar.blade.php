@@ -77,11 +77,11 @@
     <div class="offcanvas-body">
         <ul class="nav flex-column">
             <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="/category/groceries">Groceries</a></li>
-            <li class="nav-item"><a class="nav-link" href="/category/household">Household</a></li>
-            <li class="nav-item"><a class="nav-link" href="/category/personal-care">Personal Care</a></li>
-            <li class="nav-item"><a class="nav-link" href="/category/beverages">Beverages</a></li>
-            <li class="nav-item"><a class="nav-link" href="/category/snacks">Snacks</a></li>
+            <li class="nav-item"><a class="nav-link" href="/category">Groceries</a></li>
+            <li class="nav-item"><a class="nav-link" href="/category">Household</a></li>
+            <li class="nav-item"><a class="nav-link" href="/category">Personal Care</a></li>
+            <li class="nav-item"><a class="nav-link" href="/category">Beverages</a></li>
+            <li class="nav-item"><a class="nav-link" href="/category">Snacks</a></li>
             <li class="nav-item"><a class="nav-link" href="/deals">Deals</a></li>
             <li class="nav-item"><a class="nav-link" href="/about">About Us</a></li>
             <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
