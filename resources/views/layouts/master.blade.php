@@ -575,8 +575,7 @@
     @stack('styles')
 </head>
 <body>
-    <!-- Include Header -->
-    @include('partials.header')
+
     
     <!-- Include Navbar -->
     @include('partials.navbar')

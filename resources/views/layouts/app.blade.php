@@ -155,7 +155,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 <i class="bi bi-box-seam me-2"></i>Daily Dose
             </a>
             
@@ -166,42 +166,53 @@
             <div class="collapse navbar-collapse" id="navbarMain">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
+                        <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Categories</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url('/category/groceries') }}">Groceries</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/category/household') }}">Household</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/category/personal-care') }}">Personal Care</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/category/beverages') }}">Beverages</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/category/snacks') }}">Snacks</a></li>
+                            <li><a class="dropdown-item" href="{{ route('category.show', 'groceries') }}">Groceries</a></li>
+                            <li><a class="dropdown-item" href="{{ route('category.show', 'household') }}">Household</a></li>
+                            <li><a class="dropdown-item" href="{{ route('category.show', 'personal-care') }}">Personal Care</a></li>
+                            <li><a class="dropdown-item" href="{{ route('category.show', 'beverages') }}">Beverages</a></li>
+                            <li><a class="dropdown-item" href="{{ route('category.show', 'snacks') }}">Snacks</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/category') }}">Shop All</a>
+                        <a class="nav-link" href="{{ route('category.index') }}">Shop All</a>
                     </li>
                 </ul>
                 
                 <ul class="navbar-nav">
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('/login') }}"><i class="bi bi-person me-1"></i>Login</a>
+                            <a class="nav-link" href="{{ route('login') }}"><i class="bi bi-person me-1"></i>Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">Register</a>
                         </li>
                     @else
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle me-1"></i>Account
+                                <i class="bi bi-person-circle me-1"></i>{{ auth()->user()->name }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="{{ url('/orders') }}">My Orders</a></li>
+                                <li><a class="dropdown-item" href="{{ route('orders.index') }}">My Orders</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{{ url('/logout') }}">Logout</a></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Logout
+                                    </a>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
                             </ul>
                         </li>
                     @endguest
                     <li class="nav-item">
-                        <a class="nav-link position-relative" href="{{ url('/cart') }}">
+                        <a class="nav-link position-relative" href="{{ route('cart.index') }}">
                             <i class="bi bi-cart3 fs-5"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 3
@@ -229,19 +240,19 @@
                 <div class="col-6 col-lg-2">
                     <h6 class="mb-3">Shop</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="{{ url('/category/groceries') }}">Groceries</a></li>
-                        <li class="mb-2"><a href="{{ url('/category/household') }}">Household</a></li>
-                        <li class="mb-2"><a href="{{ url('/category/personal-care') }}">Personal Care</a></li>
-                        <li class="mb-2"><a href="{{ url('/category/beverages') }}">Beverages</a></li>
+                        <li class="mb-2"><a href="{{ route('category.show', 'groceries') }}">Groceries</a></li>
+                        <li class="mb-2"><a href="{{ route('category.show', 'household') }}">Household</a></li>
+                        <li class="mb-2"><a href="{{ route('category.show', 'personal-care') }}">Personal Care</a></li>
+                        <li class="mb-2"><a href="{{ route('category.show', 'beverages') }}">Beverages</a></li>
                     </ul>
                 </div>
                 <div class="col-6 col-lg-2">
                     <h6 class="mb-3">Account</h6>
                     <ul class="list-unstyled">
-                        <li class="mb-2"><a href="{{ url('/login') }}">Login</a></li>
-                        <li class="mb-2"><a href="{{ url('/register') }}">Register</a></li>
-                        <li class="mb-2"><a href="{{ url('/orders') }}">Orders</a></li>
-                        <li class="mb-2"><a href="{{ url('/cart') }}">Cart</a></li>
+                        <li class="mb-2"><a href="{{ route('login') }}">Login</a></li>
+                        <li class="mb-2"><a href="{{ route('register') }}">Register</a></li>
+                        <li class="mb-2"><a href="{{ route('orders.index') }}">Orders</a></li>
+                        <li class="mb-2"><a href="{{ route('cart.index') }}">Cart</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
@@ -266,9 +277,6 @@
             </div>
         </div>
     </footer>
-    
-    <!-- Error Modal -->
-    @include('components.error-modal')
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

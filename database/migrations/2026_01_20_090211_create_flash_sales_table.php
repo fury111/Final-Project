@@ -11,12 +11,14 @@ return new class extends Migration
         Schema::create('flash_sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->decimal('discount_percentage', 5, 2); // e.g., 20.00
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
+            $table->decimal('discount_percentage', 5, 2);
+            $table->timestamp('start_date');
+            $table->timestamp('end_date');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
-            $table->unique('product_id'); // Only one active flash sale per product
+            $table->index('product_id');
+            $table->index('is_active');
         });
     }
 

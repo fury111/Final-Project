@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Login')
+@section('title', 'Reset Password')
 
 @section('content')
 <div class="container py-5">
@@ -12,7 +12,7 @@
                         <i class="bi bi-box-seam me-2"></i>Daily<span style="color: var(--dd-accent);">Dose</span>
                     </h1>
                 </a>
-                <p class="text-muted">Welcome back! Please login to your account.</p>
+                <p class="text-muted">Set a new password for your account.</p>
             </div>
             
             <div class="card shadow-sm">
@@ -28,9 +28,10 @@
                         </div>
                     @endif
                     
-                    <!-- Login Form -->
-                    <form method="POST" action="{{ route('login') }}">
+                    <!-- Reset Password Form -->
+                    <form method="POST" action="{{ route('password.update') }}">
                         @csrf
+                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
                         
                         <div class="mb-3">
                             <label for="email" class="form-label">Email Address</label>
@@ -40,11 +41,11 @@
                                        type="email" 
                                        class="form-control @error('email') is-invalid @enderror" 
                                        name="email" 
-                                       value="{{ old('email') }}" 
+                                       value="{{ $email ?? old('email') }}" 
                                        placeholder="you@example.com" 
                                        required 
                                        autocomplete="email" 
-                                       autofocus>
+                                       readonly>
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -52,65 +53,47 @@
                         </div>
                         
                         <div class="mb-3">
-                            <div class="d-flex justify-content-between">
-                                <label for="password" class="form-label">Password</label>
-                                @if(Route::has('password.request'))
-                                    <a href="{{ route('password.request') }}" class="small text-decoration-none">Forgot password?</a>
-                                @endif
-                            </div>
+                            <label for="password" class="form-label">New Password</label>
                             <div class="input-group">
                                 <span class="input-group-text"><i class="bi bi-lock"></i></span>
                                 <input id="password" 
                                        type="password" 
                                        class="form-control @error('password') is-invalid @enderror" 
                                        name="password" 
-                                       placeholder="Enter your password" 
+                                       placeholder="Enter new password" 
                                        required 
-                                       autocomplete="current-password">
+                                       autocomplete="new-password">
                                 @error('password')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                         
-                        <div class="mb-4">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                <label class="form-check-label" for="remember">
-                                    Remember me
-                                </label>
+                        <div class="mb-3">
+                            <label for="password-confirm" class="form-label">Confirm New Password</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input id="password-confirm" 
+                                       type="password" 
+                                       class="form-control" 
+                                       name="password_confirmation" 
+                                       placeholder="Confirm new password" 
+                                       required 
+                                       autocomplete="new-password">
                             </div>
                         </div>
                         
                         <button type="submit" class="btn btn-primary w-100 mb-3">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                            <i class="bi bi-key me-2"></i>Reset Password
                         </button>
                     </form>
                     
                     <div class="text-center">
-                        <span class="text-muted">Don't have an account?</span>
-                        <a href="{{ route('register') }}" class="text-decoration-none">Create one</a>
+                        <a href="{{ route('login') }}" class="text-decoration-none">Back to Login</a>
                     </div>
                 </div>
             </div>
             
-            <!-- Social Login (Optional) -->
-            <div class="mt-4">
-                <div class="d-flex align-items-center mb-3">
-                    <hr class="flex-grow-1">
-                    <span class="px-3 text-muted small">Or continue with</span>
-                    <hr class="flex-grow-1">
-                </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-outline-secondary flex-grow-1" disabled>
-                        <i class="bi bi-google me-2"></i>Google
-                    </button>
-                    <button class="btn btn-outline-secondary flex-grow-1" disabled>
-                        <i class="bi bi-facebook me-2"></i>Facebook
-                    </button>
-                </div>
-            </div>
-
             <!-- Back to Home -->
             <div class="text-center mt-4">
                 <a href="{{ route('home') }}" class="text-muted text-decoration-none small">

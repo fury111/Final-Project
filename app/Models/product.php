@@ -4,19 +4,41 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Product extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'category_id',
         'name',
-        'description',
         'price',
-        'stock_quantity',
+        'slug',
         'image_path',
+        'stock_quantity',
+        'category_id',
+        'description',
+        'sales_count',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($product) {
+            if (empty($product->slug)) {
+                $product->slug = Str::slug($product->name);
+                
+                // Ensure uniqueness
+                $originalSlug = $product->slug;
+                $counter = 1;
+                while (self::where('slug', $product->slug)->where('id', '!=', $product->id)->exists()) {
+                    $product->slug = $originalSlug . '-' . $counter;
+                    $counter++;
+                }
+            }
+        });
+    }
 
     // Relationships
     public function category()
@@ -24,14 +46,9 @@ class Product extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function reviews()
+    public function flashSale()
     {
-        return $this->hasMany(Review::class);
-    }
-
-    public function orderItems()
-    {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasOne(FlashSale::class);
     }
 
     public function cartItems()
@@ -39,13 +56,8 @@ class Product extends Model
         return $this->hasMany(CartItem::class);
     }
 
-    public function flashSale()
+    public function reviews()
     {
-        return $this->hasOne(FlashSale::class);
+        return $this->hasMany(Review::class);
     }
-    public function itemDiscount()
-{
-    return $this->hasOne(ItemDiscount::class)->where('is_active', true);
 }
-}
-
