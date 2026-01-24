@@ -1,5 +1,3 @@
-
-
 @extends('layouts.admin_master') <!-- Use the layout -->
 
 @section('title', 'Dashboard') <!-- Set the page title -->
@@ -24,12 +22,13 @@
                 <h6 class="m-0 font-weight-bold text-primary">Product Details</h6>
             </div>
             <div class="card-body">
-                <form action="{{-- route('products.store') --}}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
 
                     <div class="form-group">
                         <label for="name" class="font-weight-bold">Product Name</label>
-                        <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="e.g. Wireless Headphones" value="{{ old('name') }}" required>
+                        <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="e.g. Wireless Headphones" value="{{ old('name', $product->name) }}" required>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -41,10 +40,12 @@
                                 <label for="category_id" class="font-weight-bold">Category</label>
                                 <select name="category_id" id="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
                                     <option value="">Select Category</option>
-                                    {{-- Replace with @foreach($categories as $category) --}}
-                                    <option value="1">Electronics</option>
-                                    <option value="2">Fashion</option>
-                                    {{-- End @foreach --}}
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" 
+                                                {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('category_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -59,7 +60,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">$</span>
                                     </div>
-                                    <input type="number" step="0.01" name="price" id="price" class="form-control @error('price') is-invalid @enderror" placeholder="0.00" value="{{ old('price') }}" required>
+                                    <input type="number" step="0.01" name="price" id="price" class="form-control @error('price') is-invalid @enderror" placeholder="0.00" value="{{ old('price', $product->price) }}" required>
                                 </div>
                                 @error('price')
                                     <small class="text-danger">{{ $message }}</small>
@@ -72,7 +73,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="stock" class="font-weight-bold">Stock Amount</label>
-                                <input type="number" name="stock" id="stock" class="form-control @error('stock') is-invalid @enderror" placeholder="0" value="{{ old('stock') }}" required>
+                                <input type="number" name="stock" id="stock" class="form-control @error('stock') is-invalid @enderror" placeholder="0" value="{{ old('stock', $product->stock_quantity) }}" required>
                                 @error('stock')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -82,6 +83,14 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="image" class="font-weight-bold">Product Image</label>
+                                @if($product->image_path)
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $product->image_path) }}" 
+                                             alt="{{ $product->name }}" 
+                                             class="img-thumbnail" 
+                                             style="max-width: 150px;">
+                                    </div>
+                                @endif
                                 <div class="custom-file">
                                     <input type="file" name="image" class="custom-file-input @error('image') is-invalid @enderror" id="customFile" accept="image/*">
                                     <label class="custom-file-label" for="customFile">Choose file</label>
@@ -98,7 +107,7 @@
 
                     <div class="form-group mb-0">
                         <button type="submit" class="btn btn-primary px-4">
-                            <i class="fas fa-save mr-1"></i> Edit Product
+                            <i class="fas fa-save mr-1"></i> Save Product
                         </button>
                         <button type="reset" class="btn btn-light border px-4 ml-2">Reset</button>
                     </div>

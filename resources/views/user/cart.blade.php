@@ -35,7 +35,7 @@
                     <div class="card-body p-0">
                         @foreach($items as $item)
                             <div class="d-flex p-3 border-bottom">
-                                <img src="{{ asset($item->product->image_path) }}" 
+                                <img src="{{ $item->product->image_path ?? 'https://placehold.co/100x100' }}" 
                                      class="rounded me-3" 
                                      alt="{{ $item->product->name }}"
                                      style="width: 100px; height: 100px; object-fit: cover;">
@@ -48,10 +48,7 @@
                                                     {{ $item->product->name }}
                                                 </a>
                                             </h6>
-                                            <small class="text-muted">{{ $item->product->description }}</small>
-                                            @if($item->product->flashSale)
-                                                <span class="badge bg-danger ms-2">SALE</span>
-                                            @endif
+                                            <small class="text-muted">{{ Str::limit($item->product->description, 100) }}</small>
                                         </div>
                                         <form method="POST" action="{{ route('cart.remove', $item->id) }}">
                                             @csrf
@@ -75,13 +72,13 @@
                                                        min="1" 
                                                        max="{{ $item->product->stock_quantity }}"
                                                        onchange="this.form.submit()">
-                                                <button class="btn btn-outline-secondary btn-sm" type="submit" name="quantity" value="{{ $item->quantity + 1 }}">
+                                                <button class="btn btn-outline-secondary btn-sm" type="submit" name="quantity" value="{{ min($item->product->stock_quantity, $item->quantity + 1) }}">
                                                     <i class="bi bi-plus"></i>
                                                 </button>
                                             </form>
                                         </div>
                                         <span class="fw-bold" style="color: var(--dd-primary);">
-                                            ${{ number_format($item->quantity * $item->product->price, 2) }}
+                                            ${{ number_format($item->item_total, 2) }}
                                         </span>
                                     </div>
                                 </div>
@@ -158,7 +155,7 @@
                         <i class="bi bi-shield-lock me-1"></i>Secure checkout
                     </small>
                     <div class="mt-2">
-                        <img src="https://placehold.co/200x30/f5f5f5/999999?text=Payment+Methods    " alt="Payment methods" class="img-fluid">
+                        <img src="https://placehold.co/200x30/f5f5f5/999999?text=Payment+Methods" alt="Payment methods" class="img-fluid">
                     </div>
                 </div>
             @endif
@@ -189,10 +186,10 @@
                                 'price' => $product->price,
                                 'category' => $product->category->name ?? 'Uncategorized',
                                 'image' => $product->image_path,
-                                'slug' => $product->slug, // ← This fixes the error
+                                'slug' => $product->slug,
                                 'stock' => $product->stock_quantity,
-                                'sale' => $product->flashSale ? true : false,
-                                'old_price' => $product->flashSale ? $product->price * 1.2 : null
+                                'sale' => false,
+                                'old_price' => null
                             ]
                         ])
                     </div>

@@ -11,7 +11,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending Orders</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $pendingOrdersCount }}</div>
                     </div>
                 </div>
             </div>
@@ -36,13 +36,28 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($orders as $order)
                     <tr>
-                        <td>#ORD-7829</td>
-                        <td>Douglas McGee</td>
-                        <td class="font-weight-bold">$329.50</td>
-                        <td><span class="badge badge-warning">Pending</span></td>
+                        <td>#ORD-{{ $order->id }}</td>
+                        <td>{{ $order->user->name ?? 'Guest' }}</td>
+                        <td class="font-weight-bold">${{ number_format($order->total_amount, 2) }}</td>
                         <td>
-                            <a href="#" class="btn btn-primary btn-sm" title="View Details">
+                            @switch($order->order_status)
+                                @case('pending')
+                                    <span class="badge badge-warning">Pending</span>
+                                    @break
+                                @case('delivered')
+                                    <span class="badge badge-success">Delivered</span>
+                                    @break
+                                @case('cancelled')
+                                    <span class="badge badge-danger">Cancelled</span>
+                                    @break
+                                @default
+                                    <span class="badge badge-secondary">{{ ucfirst($order->order_status) }}</span>
+                            @endswitch
+                        </td>
+                        <td>
+                            <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-primary btn-sm" title="View Details">
                                 <i class="fas fa-eye"></i>
                             </a>
 
@@ -52,18 +67,19 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in">
                                     <h6 class="dropdown-header">Mark as:</h6>
-                                    <a class="dropdown-item text-success" href="#" data-toggle="modal" data-target="#statusModal" data-order="#ORD-7829" data-action="Approve">
-                                        <i class="fas fa-check-circle fa-sm fa-fw mr-2"></i> Approve
+                                    <a class="dropdown-item text-success" href="#" data-toggle="modal" data-target="#statusModal" 
+                                       data-order-id="{{ $order->id }}" data-order="#ORD-{{ $order->id }}" data-action="delivered">
+                                        <i class="fas fa-check-circle fa-sm fa-fw mr-2"></i> Delivered
                                     </a>
-                                    <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#statusModal" data-order="#ORD-7829" data-action="Deny">
-                                        <i class="fas fa-times-circle fa-sm fa-fw mr-2"></i> Deny
+                                    <a class="dropdown-item text-danger" href="#" data-toggle="modal" data-target="#statusModal" 
+                                       data-order-id="{{ $order->id }}" data-order="#ORD-{{ $order->id }}" data-action="cancelled">
+                                        <i class="fas fa-times-circle fa-sm fa-fw mr-2"></i> Cancel
                                     </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Mark as Shipped</a>
                                 </div>
                             </div>
                         </td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -84,8 +100,10 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-light" type="button" data-dismiss="modal">Cancel</button>
-                <form id="statusForm" action="#" method="POST">
+                <form id="statusForm" method="POST">
                     @csrf
+                    @method('PUT')
+                    <input type="hidden" name="order_status" id="statusInput">
                     <button type="submit" class="btn btn-primary">Confirm Change</button>
                 </form>
             </div>
@@ -95,5 +113,22 @@
 @endsection
 
 @section('js')
-
+<script>
+$(document).ready(function() {
+    $('#statusModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var orderId = button.data('order-id');
+        var order = button.data('order');
+        var action = button.data('action');
+        
+        var modal = $(this);
+        var actionText = action.charAt(0).toUpperCase() + action.slice(1);
+        
+        modal.find('#modalAction').text(actionText);
+        modal.find('#modalOrderId').text(order);
+        modal.find('#statusForm').attr('action', '/admin/orders/' + orderId);
+        modal.find('#statusInput').val(action);
+    });
+});
+</script>
 @endsection

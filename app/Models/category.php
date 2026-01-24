@@ -13,6 +13,8 @@ class Category extends Model
         'name',
         'slug',
         'description',
+        'parent_category_id',
+        'is_active',
     ];
 
     protected static function boot()
@@ -26,8 +28,26 @@ class Category extends Model
         });
     }
 
+    // Relationships
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_category_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(Category::class, 'parent_category_id');
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class);
     }
+
+    public function flashSale()
+{
+    return $this->hasOne(FlashSale::class);
+}
+
+
 }

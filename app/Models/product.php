@@ -21,6 +21,23 @@ class Product extends Model
         'sales_count',
     ];
 
+    // Add this method to handle image paths
+    public function getImagePathAttribute($value)
+    {
+        // If image path is empty, return a default placeholder
+        if (empty($value)) {
+            return 'https://placehold.co/200x200?text=No+Image';
+        }
+        
+        // If image path starts with http, return as is
+        if (strpos($value, 'http') === 0) {
+            return $value;
+        }
+        
+        // Otherwise, prepend storage path
+        return asset('storage/' . $value);
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -51,6 +68,11 @@ class Product extends Model
         return $this->hasOne(FlashSale::class);
     }
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
@@ -59,5 +81,11 @@ class Product extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    // Method to get total quantity sold
+    public function getTotalQuantitySoldAttribute()
+    {
+        return $this->orderItems()->sum('quantity');
     }
 }

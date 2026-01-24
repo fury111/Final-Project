@@ -30,34 +30,36 @@
                         <th>Email Address</th>
                         <th>Role</th>
                         <th>Registered Date</th>
-                       
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- Replace with @foreach($users as $user) --}}
+                    @foreach($users as $user)
                     <tr>
                         <td class="text-center">
-                            {{-- Use a rounded circle image like the template header --}}
-                            <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60" style="width: 40px; height: 40px;">
-                        </td>
-                        <td class="align-middle font-weight-bold">Douglas McGee</td>
-                        <td class="align-middle">douglas@example.com</td>
-                        <td class="align-middle"><span class="badge badge-primary">Administrator</span></td>
-                        <td class="align-middle">2023/01/15</td>
-    
-                    </tr>
-                    <tr>
-                         <td class="text-center">
-                             <div class="btn btn-circle btn-secondary btn-sm" style="width: 40px; height: 40px; padding-top: 8px;">
+                            <div class="btn btn-circle btn-secondary btn-sm" style="width: 40px; height: 40px; padding-top: 8px;">
                                 <i class="fas fa-user"></i>
                             </div>
                         </td>
-                        <td class="align-middle font-weight-bold">Gavin Joyce</td>
-                        <td class="align-middle">gavin@customer.com</td>
+                        <td class="align-middle font-weight-bold">{{ $user->name }}</td>
+                        <td class="align-middle">{{ $user->email }}</td>
                         <td class="align-middle"><span class="badge badge-secondary">Customer</span></td>
-                        <td class="align-middle">2023/06/22</td>
+                        <td class="align-middle">{{ $user->created_at ? $user->created_at->format('Y/m/d') : 'N/A' }}</td>
                     </tr>
-                     {{-- End Loop --}}
+                    @endforeach
+
+                    @foreach($admins as $admin)
+                    <tr>
+                        <td class="text-center">
+                            <div class="btn btn-circle btn-secondary btn-sm" style="width: 40px; height: 40px; padding-top: 8px;">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </td>
+                        <td class="align-middle font-weight-bold">{{ $admin->name }}</td>
+                        <td class="align-middle">{{ $admin->email }}</td>
+                        <td class="align-middle"><span class="badge badge-primary">Administrator</span></td>
+                        <td class="align-middle">{{ $admin->created_at ? $admin->created_at->format('Y/m/d') : 'N/A' }}</td>
+                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

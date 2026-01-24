@@ -16,22 +16,27 @@
         <h6 class="m-0 font-weight-bold text-primary">Filter Categories</h6>
     </div>
     <div class="card-body">
-        <form class="row">
+        <form method="GET" class="row">
             <div class="col-md-5 mb-3">
                 <label class="small font-weight-bold text-dark">Search Name or Slug</label>
-                <input type="text" class="form-control" id="searchCategory" placeholder="e.g. 'Electronics' or 'shoes'...">
+                <input type="text" class="form-control" name="search" 
+                       value="{{ request('search') }}" 
+                       placeholder="e.g. 'Electronics' or 'shoes'...">
             </div>
             <div class="col-md-4 mb-3">
                 <label class="small font-weight-bold text-dark">Parent Category</label>
-                <select class="form-control" id="filterParent">
+                <select class="form-control" name="parent">
                     <option value="">All Categories</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Clothing">Clothing</option>
-                    <option value="Home & Garden">Home & Garden</option>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" 
+                                {{ request('parent') == $category->id ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
                 </select>
             </div>
             <div class="col-md-3 mb-3 d-flex align-items-end">
-                <button type="button" class="btn btn-primary btn-block">
+                <button type="submit" class="btn btn-primary btn-block">
                     <i class="fas fa-search fa-sm mr-1"></i> Apply Filter
                 </button>
             </div>
@@ -42,7 +47,9 @@
 <div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
         <h6 class="m-0 font-weight-bold text-primary">Categories Management</h6>
-        <div class="text-muted small">Showing 1 to 2 of 12 categories</div>
+        <div class="text-muted small">
+            Showing {{ $categories->firstItem() }} to {{ $categories->lastItem() }} of {{ $categories->total() }} categories
+        </div>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -58,51 +65,68 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @forelse($categories as $category)
                     <tr>
-                        <td>1</td>
-                        <td class="font-weight-bold text-dark">Electronics</td>
-                        <td>electronics</td>
-                        <td><span class="text-muted">None</span></td>
-                        <td><span class="badge badge-secondary px-2">150 Items</span></td>
+                        <td>{{ $category->id }}</td>
+                        <td class="font-weight-bold text-dark">{{ $category->name }}</td>
+                        <td>{{ $category->slug }}</td>
                         <td>
-                            <a href="{{ route('admin.categories.edit') }}" class="btn btn-info btn-sm btn-icon-split">
+                            @if($category->parent_category_id)
+                                {{ $category->parent->name ?? 'Unknown' }}
+                            @else
+                                <span class="text-muted">None</span>
+                            @endif
+                        </td>
+                        <td>
+                            <span class="badge badge-secondary px-2">
+                                {{ $category->products_count ?? $category->products->count() }} Items
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ route('admin.categories.edit', $category->id) }}" 
+                               class="btn btn-info btn-sm btn-icon-split">
                                 <span class="icon text-white-50"><i class="fas fa-edit"></i></span>
                                 <span class="text">Edit</span>
                             </a>
                         </td>
                     </tr>
+                    @empty
                     <tr>
-                        <td>2</td>
-                        <td class="font-weight-bold text-dark">Headphones</td>
-                        <td>headphones</td>
-                        <td>Electronics</td>
-                        <td><span class="badge badge-secondary px-2">45 Items</span></td>
-                        <td>
-                            <a href="{{ route('admin.categories.edit') }}" class="btn btn-info btn-sm btn-icon-split">
-                                <span class="icon text-white-50"><i class="fas fa-edit"></i></span>
-                                <span class="text">Edit</span>
-                            </a>
+                        <td colspan="6" class="text-center">
+                            <div class="py-5">
+                                <i class="fas fa-folder-open fa-2x text-gray-300 mb-3"></i>
+                                <p class="text-gray-500">No categories found.</p>
+                            </div>
                         </td>
                     </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
 
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <div class="small text-muted font-italic">Page 1 of 2</div>
+            <div class="small text-muted font-italic">
+                Page {{ $categories->currentPage() }} of {{ $categories->lastPage() }}
+            </div>
             <nav aria-label="Page navigation">
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
+                {{ $categories->appends(request()->query())->links('pagination::bootstrap-4') }}
             </nav>
         </div>
     </div>
 </div>
+@endsection
+
+@section('js')
+    <script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTableCategories').DataTable({
+                "pageLength": 10,
+                "ordering": true,
+                "searching": true,
+                "paging": true
+            });
+        });
+    </script>
 @endsection

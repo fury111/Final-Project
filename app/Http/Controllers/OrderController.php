@@ -3,20 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('user_id', auth()->id())->with('items.product')->latest()->paginate(10);
+        $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
         return view('user.orders', compact('orders'));
     }
 
     public function show($id)
     {
-        $order = Order::where('user_id', auth()->id())->with('items.product', 'address')->findOrFail($id);
-        return view('user.order-detail', compact('order'));
+        $order = Order::with(['user', 'items.product'])->findOrFail($id);
+
+        // Check if user owns the order
+        if ($order->user_id !== Auth::id() && !Auth::guard('admin')->check()) {
+            abort(403);
+        }
+
+        return view('user.order-confirm', compact('order'));
     }
 }

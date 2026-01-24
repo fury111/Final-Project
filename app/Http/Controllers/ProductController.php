@@ -3,20 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Review;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function show($slug)
     {
-        $product = Product::with('category')->where('slug', $slug)->firstOrFail();
-        
-        $approvedReviews = Review::where('product_id', $product->id)
-                                ->where('is_approved', true)
-                                ->with('user')
-                                ->get();
+        $product = Product::with(['category', 'reviews.user'])
+            ->where('slug', $slug)
+            ->firstOrFail();
 
-        return view('user.product', compact('product', 'approvedReviews'));
+        // Calculate average rating
+        $avgRating = $product->reviews->avg('rating') ?? 0;
+        $reviewCount = $product->reviews->count();
+
+        // Get related products (same category)
+        $relatedProducts = Product::where('category_id', $product->category_id)
+            ->where('id', '!=', $product->id)
+            ->limit(4)
+            ->get();
+
+        return view('user.product', compact('product', 'avgRating', 'reviewCount', 'relatedProducts'));
     }
 }

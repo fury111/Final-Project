@@ -107,14 +107,7 @@
         box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
     }
 
-    /* Refined Upload Box */
-    .upload-area {
-        border: 1px dashed #ced4da;
-        border-radius: 10px;
-        padding: 20px;
-        background-color: #fbfbfc;
-    }
-
+    /* Refined Upload Box - REMOVED */
     .btn-submit {
         background-color: var(--admin-primary);
         color: white;
@@ -141,14 +134,16 @@
                 <div class="profile-banner"></div>
                 <div class="card-body">
                     <div class="avatar-container mb-4 text-center">
-                        <div class="avatar-main rounded-circle mx-auto">AT</div>
-                        <h4 class="mt-3 fw-bold mb-1">Alex Thompson</h4>
-                        <p class="text-muted small mb-0">Super Administrator</p>
+                        <div class="avatar-main rounded-circle mx-auto">
+                            {{ strtoupper(substr(Auth::guard('admin')->user()->name, 0, 1)) }}
+                        </div>
+                        <h4 class="mt-3 fw-bold mb-1">{{ Auth::guard('admin')->user()->name }}</h4>
+                        <p class="text-muted small mb-0">Administrator</p>
                     </div>
 
                     <div class="text-center border-top border-bottom py-3 my-4">
-                        <span class="d-block fw-bold h5 mb-0">12</span>
-                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.65rem;">System Logs Recorded</small>
+                        <span class="d-block fw-bold h5 mb-0">{{ $totalOrders }}</span>
+                        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.65rem;">Total Orders Managed</small>
                     </div>
 
                     <div class="px-2">
@@ -156,14 +151,14 @@
                             <div class="info-icon"><i class="fas fa-envelope fa-sm"></i></div>
                             <div>
                                 <small class="text-muted d-block" style="font-size: 0.7rem;">EMAIL ADDRESS</small>
-                                <span class="fw-medium small text-dark">alex.admin@example.com</span>
+                                <span class="fw-medium small text-dark">{{ Auth::guard('admin')->user()->email }}</span>
                             </div>
                         </div>
                         <div class="info-item">
                             <div class="info-icon"><i class="fas fa-calendar-alt fa-sm"></i></div>
                             <div>
                                 <small class="text-muted d-block" style="font-size: 0.7rem;">MEMBER SINCE</small>
-                                <span class="fw-medium small text-dark">January 2024</span>
+                                <span class="fw-medium small text-dark">{{ Auth::guard('admin')->user()->created_at->format('F Y') }}</span>
                             </div>
                         </div>
                     </div>
@@ -180,7 +175,10 @@
                     <h5 class="mb-0 fw-bold">Account Settings</h5>
                 </div>
 
-                <form>
+                <form action="{{ route('admin.profile.update') }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    
                     <div class="mb-5">
                         <div class="section-title mb-4">
                             <span>01</span> General Information
@@ -188,25 +186,13 @@
                         
                         <div class="mb-4">
                             <label class="form-label">FULL NAME</label>
-                            <input type="text" class="form-control" value="Alex Thompson">
+                            <input type="text" class="form-control" name="name" value="{{ Auth::guard('admin')->user()->name }}">
                         </div>
 
-                        <div class="upload-area p-4 bg-light border-dashed rounded-3">
-    <label class="form-label-custom d-block mb-3">Profile Picture</label>
-    <div class="d-flex align-items-center gap-4">
-        
-
-        <div class="flex-grow-1">
-            <p >Choose a professional photo. JPG or PNG, max 2MB.</p>
-            
-            <input type="file" id="real-file" hidden name="image" accept="image/*" />
-            
-            <button type="button" class="btn btn-outline-primary fw-bold px-4" id="custom-button">
-                <i class="fas fa-upload me-2"></i>Choose Photo
-            </button>
-        </div>
-    </div>
-</div>
+                        <div class="mb-4">
+                            <label class="form-label">EMAIL ADDRESS</label>
+                            <input type="email" class="form-control" name="email" value="{{ Auth::guard('admin')->user()->email }}">
+                        </div>
                     </div>
 
                     <div class="mb-5">
@@ -217,11 +203,11 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">NEW PASSWORD</label>
-                                <input type="password" class="form-control" placeholder="••••••••">
+                                <input type="password" class="form-control" name="password" placeholder="••••••••">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">CONFIRM PASSWORD</label>
-                                <input type="password" class="form-control" placeholder="••••••••">
+                                <input type="password" class="form-control" name="password_confirmation" placeholder="••••••••">
                             </div>
                         </div>
                     </div>

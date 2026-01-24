@@ -19,4 +19,17 @@ class Coupon extends Model
         'expires_at',
         'is_active',
     ];
-}v
+
+    protected $casts = [
+        'expires_at' => 'datetime',
+        'is_active' => 'boolean',
+        'discount_value' => 'decimal:2',
+        'min_order_amount' => 'decimal:2',
+    ];
+
+    protected $dates = [
+        'expires_at',
+        'created_at',
+        'updated_at',
+    ];
+}

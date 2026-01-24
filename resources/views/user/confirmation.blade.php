@@ -20,7 +20,7 @@
                 <div class="card-header bg-white">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Order Confirmation</h5>
-                        <span class="badge bg-success">Confirmed</span>
+                        <span class="badge bg-success">{{ ucfirst($order->order_status) }}</span>
                     </div>
                 </div>
                 <div class="card-body">
@@ -28,19 +28,19 @@
                     <div class="row g-4 mb-4">
                         <div class="col-sm-6 col-md-3">
                             <small class="text-muted d-block">Order Number</small>
-                            <strong>#DD-2026-0458</strong>
+                            <strong>#ORD-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</strong>
                         </div>
                         <div class="col-sm-6 col-md-3">
                             <small class="text-muted d-block">Date</small>
-                            <strong>January 15, 2026</strong>
+                            <strong>{{ $order->created_at->format('M j, Y') }}</strong>
                         </div>
                         <div class="col-sm-6 col-md-3">
-                            <small class="text-muted d-block">Payment Method</small>
-                            <strong>Credit Card</strong>
+                            <small class="text-muted d-block">Status</small>
+                            <strong>{{ ucfirst($order->order_status) }}</strong>
                         </div>
                         <div class="col-sm-6 col-md-3">
-                            <small class="text-muted d-block">Estimated Delivery</small>
-                            <strong>Jan 18-20, 2026</strong>
+                            <small class="text-muted d-block">Total</small>
+                            <strong>${{ number_format($order->total_amount, 2) }}</strong>
                         </div>
                     </div>
 
@@ -58,57 +58,31 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($order->items as $item)
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="https://placehold.co/50x50/fff3cd/2D5A27?text=1  " class="rounded me-2" alt="Organic Honey">
-                                            <span>Organic Honey (500g)</span>
+                                            <img src="{{ $item->product->image_path ?? 'https://placehold.co/50x50' }}" class="rounded me-2" alt="{{ $item->product->name }}">
+                                            <span>{{ $item->product->name }}</span>
                                         </div>
                                     </td>
-                                    <td class="text-center">2</td>
-                                    <td class="text-end">$25.98</td>
+                                    <td class="text-center">{{ $item->quantity }}</td>
+                                    <td class="text-end">${{ number_format($item->price_at_time * $item->quantity, 2) }}</td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://placehold.co/50x50/e8f5e9/2D5A27?text=2  " class="rounded me-2" alt="Natural Soap Set">
-                                            <span>Natural Soap Set</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">1</td>
-                                    <td class="text-end">$18.50</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://placehold.co/50x50/c8e6c9/2D5A27?text=3  " class="rounded me-2" alt="Green Tea Collection">
-                                            <span>Green Tea Collection</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-center">1</td>
-                                    <td class="text-end">$15.99</td>
-                                </tr>
+                                @endforeach
                             </tbody>
                             <tfoot>
                                 <tr>
                                     <td colspan="2" class="text-end text-muted">Subtotal</td>
-                                    <td class="text-end">$60.47</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="text-end text-muted">Discount</td>
-                                    <td class="text-end text-success">-$6.49</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" class="text-end text-muted">Shipping</td>
-                                    <td class="text-end">Free</td>
+                                    <td class="text-end">${{ number_format($order->total_amount / 1.08, 2) }}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2" class="text-end text-muted">Tax</td>
-                                    <td class="text-end">$4.32</td>
+                                    <td class="text-end">${{ number_format($order->total_amount - ($order->total_amount / 1.08), 2) }}</td>
                                 </tr>
                                 <tr class="table-light">
                                     <td colspan="2" class="text-end"><strong>Total</strong></td>
-                                    <td class="text-end"><strong class="fs-5" style="color: var(--dd-primary);">$58.30</strong></td>
+                                    <td class="text-end"><strong class="fs-5" style="color: var(--dd-primary);">${{ number_format($order->total_amount, 2) }}</strong></td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -121,17 +95,20 @@
                         <div class="col-md-6">
                             <h6 class="mb-2"><i class="bi bi-geo-alt me-2"></i>Shipping Address</h6>
                             <address class="text-muted mb-0">
-                                John Doe<br>
-                                123 Main Street, Apt 4B<br>
-                                San Francisco, CA 94102<br>
-                                United States
+                                {{ $order->address->full_name ?? 'N/A' }}<br>
+                                {{ $order->address->address_line1 ?? 'N/A' }}<br>
+                                @if($order->address->address_line2)
+                                    {{ $order->address->address_line2 }}<br>
+                                @endif
+                                {{ $order->address->city ?? 'N/A' }}, {{ $order->address->state ?? 'N/A' }} {{ $order->address->postal_code ?? 'N/A' }}<br>
+                                {{ $order->address->country ?? 'N/A' }}
                             </address>
                         </div>
                         <div class="col-md-6">
                             <h6 class="mb-2"><i class="bi bi-credit-card me-2"></i>Payment Details</h6>
                             <p class="text-muted mb-0">
-                                Visa ending in 4242<br>
-                                Billing address same as shipping
+                                Payment processed<br>
+                                Order ID: #ORD-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}
                             </p>
                         </div>
                     </div>
@@ -152,7 +129,7 @@
             <div class="text-center mt-5">
                 <p class="text-muted small mb-2">
                     <i class="bi bi-envelope me-1"></i>
-                    A confirmation email has been sent to <strong>john.doe@example.com</strong>
+                    A confirmation email has been sent to <strong>{{ $order->user->email ?? 'N/A' }}</strong>
                 </p>
                 <p class="text-muted small">
                     Questions about your order? <a href="{{ route('contact') }}" class="text-decoration-none">Contact Support</a>

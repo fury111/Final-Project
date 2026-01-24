@@ -50,179 +50,161 @@
     <div class="row g-4">
         <!-- Checkout Form -->
         <div class="col-lg-8">
-            <!-- Billing Address -->
-            <div class="card mb-4">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-geo-alt me-2"></i>Billing Address</h5>
+            <form method="POST" action="{{ route('checkout.store') }}" id="checkout-form">
+                @csrf
+                
+                <!-- Address Selection -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-geo-alt me-2"></i>Select Address</h5>
+                    </div>
+                    <div class="card-body">
+                        @if($addresses->count() > 0)
+                            <div class="mb-3">
+                                @foreach($addresses as $address)
+                                <div class="form-check mb-2 p-3 border rounded">
+                                    <input class="form-check-input" type="radio" name="address_id" id="address_{{ $address->id }}" value="{{ $address->id }}" {{ $loop->first ? 'checked' : '' }}>
+                                    <label class="form-check-label w-100" for="address_{{ $address->id }}">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong>{{ $address->full_name }}</strong>
+                                                <p class="text-muted small mb-0">{{ $address->address_line1 }}, {{ $address->city }}, {{ $address->state }} {{ $address->postal_code }}</p>
+                                                <span class="badge bg-secondary">{{ $address->label }}</span>
+                                                @if($address->is_default)
+                                                    <span class="badge bg-primary">Default</span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="alert alert-warning">
+                                No saved addresses found. Please <a href="{{ route('addresses.create') }}">add an address</a> first.
+                            </div>
+                        @endif
+                        
+                        <a href="{{ route('addresses.create') }}" class="btn btn-outline-primary">
+                            <i class="bi bi-plus me-1"></i>Add New Address
+                        </a>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">First Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="John">
+
+                <!-- Shipping Method -->
+                <div class="card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-truck me-2"></i>Shipping Method</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3 p-3 border rounded">
+                            <input class="form-check-input" type="radio" name="shipping_method" id="standard" value="standard" checked>
+                            <label class="form-check-label w-100" for="standard">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Standard Shipping</strong>
+                                        <p class="text-muted small mb-0">5-7 business days</p>
+                                    </div>
+                                    <span class="text-success fw-bold">FREE</span>
+                                </div>
+                            </label>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="Doe">
+                        <div class="form-check mb-3 p-3 border rounded">
+                            <input class="form-check-input" type="radio" name="shipping_method" id="express" value="express">
+                            <label class="form-check-label w-100" for="express">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Express Shipping</strong>
+                                        <p class="text-muted small mb-0">2-3 business days</p>
+                                    </div>
+                                    <span class="fw-bold">$9.99</span>
+                                </div>
+                            </label>
                         </div>
-                        <div class="col-12">
-                            <label class="form-label">Email Address <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" placeholder="john@example.com">
+                        <div class="form-check p-3 border rounded">
+                            <input class="form-check-input" type="radio" name="shipping_method" id="overnight" value="overnight">
+                            <label class="form-check-label w-100" for="overnight">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>Overnight Shipping</strong>
+                                        <p class="text-muted small mb-0">Next business day</p>
+                                    </div>
+                                    <span class="fw-bold">$19.99</span>
+                                </div>
+                            </label>
                         </div>
-                        <div class="col-12">
-                            <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" placeholder="+1 (555) 000-0000">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Street Address <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="123 Main St">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Apartment, suite, etc. (optional)</label>
-                            <input type="text" class="form-control" placeholder="Apt 4B">
-                        </div>
-                        <div class="col-md-5">
-                            <label class="form-label">City <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="New York">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">State <span class="text-danger">*</span></label>
-                            <select class="form-select">
-                                <option value="">Choose...</option>
-                                <option value="CA">California</option>
-                                <option value="NY">New York</option>
-                                <option value="TX">Texas</option>
-                                <option value="FL">Florida</option>
-                                <option value="WA">Washington</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label class="form-label">ZIP Code <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" placeholder="10001">
-                        </div>
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="sameAsShipping" checked>
-                                <label class="form-check-label" for="sameAsShipping">
-                                    Shipping address same as billing
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-credit-card me-2"></i>Payment Method</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <div class="form-check mb-3 p-3 border rounded">
+                                <input class="form-check-input" type="radio" name="payment_method" id="creditCard" value="credit_card" checked>
+                                <label class="form-check-label w-100" for="creditCard">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="bi bi-credit-card me-2"></i>Credit / Debit Card</span>
+                                        <img src="https://placehold.co/100x24/f5f5f5/999999?text=Cards" alt="Cards">
+                                    </div>
+                                </label>
+                            </div>
+                            
+                            <div class="form-check mb-3 p-3 border rounded">
+                                <input class="form-check-input" type="radio" name="payment_method" id="paypal" value="paypal">
+                                <label class="form-check-label w-100" for="paypal">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="bi bi-paypal me-2"></i>PayPal</span>
+                                        <span class="text-primary fw-bold">PayPal</span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div class="form-check p-3 border rounded">
+                                <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod">
+                                <label class="form-check-label w-100" for="cod">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="bi bi-cash me-2"></i>Cash on Delivery</span>
+                                        <span class="badge bg-secondary">+$2.00</span>
+                                    </div>
                                 </label>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Shipping Method -->
-            <div class="card mb-4">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-truck me-2"></i>Shipping Method</h5>
-                </div>
-                <div class="card-body">
-                    <div class="form-check mb-3 p-3 border rounded">
-                        <input class="form-check-input" type="radio" name="shipping" id="standard" checked>
-                        <label class="form-check-label w-100" for="standard">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>Standard Shipping</strong>
-                                    <p class="text-muted small mb-0">5-7 business days</p>
+                        <!-- Credit Card Form -->
+                        <div id="creditCardForm">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">Name on Card <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="John Doe">
                                 </div>
-                                <span class="text-success fw-bold">FREE</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="form-check mb-3 p-3 border rounded">
-                        <input class="form-check-input" type="radio" name="shipping" id="express">
-                        <label class="form-check-label w-100" for="express">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>Express Shipping</strong>
-                                    <p class="text-muted small mb-0">2-3 business days</p>
+                                <div class="col-12">
+                                    <label class="form-label">Card Number <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="0000 0000 0000 0000">
                                 </div>
-                                <span class="fw-bold">$9.99</span>
-                            </div>
-                        </label>
-                    </div>
-                    <div class="form-check p-3 border rounded">
-                        <input class="form-check-input" type="radio" name="shipping" id="overnight">
-                        <label class="form-check-label w-100" for="overnight">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <strong>Overnight Shipping</strong>
-                                    <p class="text-muted small mb-0">Next business day</p>
+                                <div class="col-md-6">
+                                    <label class="form-label">Expiration Date <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" placeholder="MM/YY">
                                 </div>
-                                <span class="fw-bold">$19.99</span>
-                            </div>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Payment Method -->
-            <div class="card">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-credit-card me-2"></i>Payment Method</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-4">
-                        <div class="form-check mb-3 p-3 border rounded">
-                            <input class="form-check-input" type="radio" name="payment_method" id="creditCard" checked>
-                            <label class="form-check-label w-100" for="creditCard">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span><i class="bi bi-credit-card me-2"></i>Credit / Debit Card</span>
-                                    <img src="https://placehold.co/100x24/f5f5f5/999999?text=Cards  " alt="Cards">
-                                </div>
-                            </label>
-                        </div>
-                        
-                        <div class="form-check mb-3 p-3 border rounded">
-                            <input class="form-check-input" type="radio" name="payment_method" id="paypal">
-                            <label class="form-check-label w-100" for="paypal">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span><i class="bi bi-paypal me-2"></i>PayPal</span>
-                                    <span class="text-primary fw-bold">PayPal</span>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div class="form-check p-3 border rounded">
-                            <input class="form-check-input" type="radio" name="payment_method" id="cod">
-                            <label class="form-check-label w-100" for="cod">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span><i class="bi bi-cash me-2"></i>Cash on Delivery</span>
-                                    <span class="badge bg-secondary">+$2.00</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- Credit Card Form -->
-                    <div id="creditCardForm">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label class="form-label">Name on Card <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" placeholder="John Doe">
-                            </div>
-                            <div class="col-12">
-                                <label class="form-label">Card Number <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" placeholder="0000 0000 0000 0000">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Expiration Date <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" placeholder="MM/YY">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">CVV <span class="text-danger">*</span></label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="123">
-                                    <span class="input-group-text" title="3-digit code on back of card">
-                                        <i class="bi bi-question-circle"></i>
-                                    </span>
+                                <div class="col-md-6">
+                                    <label class="form-label">CVV <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="123">
+                                        <span class="input-group-text" title="3-digit code on back of card">
+                                            <i class="bi bi-question-circle"></i>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                
+                <input type="hidden" name="total_amount" value="{{ $total }}">
+            </form>
         </div>
 
         <!-- Order Summary Sidebar -->
@@ -234,36 +216,18 @@
                 <div class="card-body">
                     <!-- Order Items -->
                     <div class="mb-3">
+                        @foreach($items as $item)
                         <div class="d-flex justify-content-between align-items-center mb-2">
                             <div class="d-flex align-items-center">
-                                <img src="https://placehold.co/50x50/fff3cd/2D5A27?text=1  " class="rounded me-2" alt="Product" style="width: 50px; height: 50px; object-fit: cover;">
+                                <img src="{{ $item->product->image_path ?? 'https://placehold.co/50x50' }}" class="rounded me-2" alt="{{ $item->product->name }}" style="width: 50px; height: 50px; object-fit: cover;">
                                 <div>
-                                    <small class="d-block">Organic Honey</small>
-                                    <small class="text-muted">x2</small>
+                                    <small class="d-block">{{ $item->product->name }}</small>
+                                    <small class="text-muted">x{{ $item->quantity }}</small>
                                 </div>
                             </div>
-                            <span>$25.98</span>
+                            <span>${{ number_format($item->quantity * $item->product->price, 2) }}</span>
                         </div>
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div class="d-flex align-items-center">
-                                <img src="https://placehold.co/50x50/e8f5e9/2D5A27?text=2  " class="rounded me-2" alt="Product" style="width: 50px; height: 50px; object-fit: cover;">
-                                <div>
-                                    <small class="d-block">Natural Soap Set</small>
-                                    <small class="text-muted">x1</small>
-                                </div>
-                            </div>
-                            <span>$18.50</span>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <img src="https://placehold.co/50x50/c8e6c9/2D5A27?text=3  " class="rounded me-2" alt="Product" style="width: 50px; height: 50px; object-fit: cover;">
-                                <div>
-                                    <small class="d-block">Green Tea Collection</small>
-                                    <small class="text-muted">x1</small>
-                                </div>
-                            </div>
-                            <span>$15.99</span>
-                        </div>
+                        @endforeach
                     </div>
 
                     <a href="{{ route('cart') }}" class="small text-decoration-none"><i class="bi bi-pencil me-1"></i>Edit Cart</a>
@@ -273,11 +237,11 @@
                     <!-- Totals -->
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">Subtotal</span>
-                        <span>$60.47</span>
+                        <span>${{ number_format($subtotal, 2) }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">Discount</span>
-                        <span class="text-success">-$6.49</span>
+                        <span class="text-success">-$0.00</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">Shipping</span>
@@ -285,17 +249,17 @@
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">Tax</span>
-                        <span>$4.32</span>
+                        <span>${{ number_format($tax, 2) }}</span>
                     </div>
                     <hr>
                     <div class="d-flex justify-content-between mb-4">
                         <strong>Total</strong>
-                        <strong class="fs-4" style="color: var(--dd-primary);">$58.30</strong>
+                        <strong class="fs-4" style="color: var(--dd-primary);">${{ number_format($total, 2) }}</strong>
                     </div>
 
-                    <a href="{{ route('order.confirm') }}" class="btn btn-primary btn-lg w-100">
+                    <button type="submit" form="checkout-form" class="btn btn-primary btn-lg w-100">
                         <i class="bi bi-lock me-2"></i>Place Order
-                    </a>
+                    </button>
 
                     <div class="text-center mt-3">
                         <small class="text-muted">
@@ -308,4 +272,29 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    // Form submission handler
+    document.querySelector('form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate address selection
+        const selectedAddress = document.querySelector('input[name="address_id"]:checked');
+        if (!selectedAddress) {
+            alert('Please select an address before placing your order.');
+            return;
+        }
+        
+        // Show loading state
+        const submitBtn = document.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Processing...';
+        submitBtn.disabled = true;
+        
+        // Submit form
+        this.submit();
+    });
+</script>
 @endsection

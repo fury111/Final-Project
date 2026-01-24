@@ -25,4 +25,10 @@ class CartItem extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    // Calculate item total
+    public function getItemTotalAttribute()
+    {
+        return $this->quantity * $this->product->price;
+    }
 }

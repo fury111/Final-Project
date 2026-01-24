@@ -47,68 +47,89 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($reviews as $review)
                     <tr>
-                        <td class="font-weight-bold">iPhone 15 Pro</td>
+                        <td class="font-weight-bold">{{ $review->product->name ?? 'N/A' }}</td>
                         <td>
-                            <div class="small">Mark Twain</div>
-                            <div class="text-xs text-muted">2 hours ago</div>
+                            <div class="small">{{ $review->user->name ?? 'Guest' }}</div>
+                            <div class="text-xs text-muted">{{ $review->created_at ? $review->created_at->diffForHumans() : 'N/A' }}</div>
                         </td>
                         <td>
                             <div class="text-warning small">
-                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $review->rating)
+                                        <i class="fas fa-star"></i>
+                                    @else
+                                        <i class="far fa-star"></i>
+                                    @endif
+                                @endfor
                             </div>
                         </td>
                         <td>
-                            "Absolutely loving the new camera features, but the battery lif..."
-                            <a href="#" class="small text-primary" data-toggle="modal" data-target="#reviewModal">Read More</a>
+                            "{{ Str::limit(strip_tags($review->comment), 50) }} "
+                            <a href="#" class="small text-primary" data-toggle="modal" data-target="#reviewModal" 
+                               data-review="{{ $review->comment }}" data-product="{{ $review->product->name ?? 'N/A' }}" 
+                               data-rating="{{ $review->rating }}" data-user="{{ $review->user->name ?? 'Guest' }}">
+                                Read More
+                            </a>
                         </td>
-                        <td><span class="badge badge-warning">Pending</span></td>
                         <td>
-                            <button class="btn btn-success btn-sm btn-icon-split mb-1">
-                                <span class="icon text-white-50"><i class="fas fa-check"></i></span>
-                                <span class="text">Approve</span>
-                            </button>
-                            <button class="btn btn-danger btn-sm btn-circle" title="Delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            @switch($review->is_approved)
+                                @case(1)
+                                    <span class="badge badge-success">Published</span>
+                                    @break
+                                @case(0)
+                                    <span class="badge badge-warning">Pending</span>
+                                    @break
+                                @case(-1)
+                                    <span class="badge badge-danger">Hidden</span>
+                                    @break
+                                @default
+                                    <span class="badge badge-secondary">Unknown</span>
+                            @endswitch
+                        </td>
+                        <td>
+                            @if($review->is_approved != 1)
+                                <form action="/admin/reviews/{{ $review->id }}/approve" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-success btn-sm btn-icon-split mb-1">
+                                        <span class="icon text-white-50"><i class="fas fa-check"></i></span>
+                                        <span class="text">Approve</span>
+                                    </button>
+                                </form>
+                            @endif
+                            
+                            @if($review->is_approved != -1)
+                                <form action="/admin/reviews/{{ $review->id }}/hide" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-secondary btn-sm btn-icon-split mb-1">
+                                        <span class="icon text-white-50"><i class="fas fa-eye-slash"></i></span>
+                                        <span class="text">Hide</span>
+                                    </button>
+                                </form>
+                            @endif
+                            
+                            <form action="/admin/reviews/{{ $review->id }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm btn-circle" title="Delete"
+                                        onclick="return confirm('Are you sure you want to delete this review?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td class="font-weight-bold">Gaming Chair</td>
-                        <td>
-                            <div class="small">Sarah Connor</div>
-                            <div class="text-xs text-muted">1 day ago</div>
-                        </td>
-                        <td>
-                            <div class="text-warning small">
-                                <i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i>
-                            </div>
-                        </td>
-                        <td>
-                            "The chair arrived broken and the customer service was unhelp..."
-                            <a href="#" class="small text-primary">Read More</a>
-                        </td>
-                        <td><span class="badge badge-success">Published</span></td>
-                        <td>
-                            <button class="btn btn-secondary btn-sm btn-icon-split mb-1">
-                                <span class="icon text-white-50"><i class="fas fa-eye-slash"></i></span>
-                                <span class="text">Hide</span>
-                            </button>
-                        </td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
         
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <div class="small text-muted">Page 1 of 10</div>
+            <div class="small text-muted">Page {{ $reviews->currentPage() }} of {{ $reviews->lastPage() }}</div>
             <nav>
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
+                {{ $reviews->links('pagination::bootstrap-4') }}
             </nav>
         </div>
     </div>
@@ -125,14 +146,14 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <h6 class="font-weight-bold text-gray-800">iPhone 15 Pro</h6>
+                    <h6 class="font-weight-bold text-gray-800" id="modalProductName"></h6>
                     <div class="text-warning">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                        <span class="text-muted text-xs ml-2">by Mark Twain</span>
+                        <span id="modalRatingStars"></span>
+                        <span class="text-muted text-xs ml-2" id="modalUserName"></span>
                     </div>
                 </div>
                 <hr>
-                <p class="text-dark">"Absolutely loving the new camera features, but the battery life could be a little better. I upgraded from the 12 and the difference is night and day. Shipping was super fast as well!"</p>
+                <p class="text-dark" id="modalReviewContent"></p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
@@ -141,4 +162,34 @@
         </div>
     </div>
 </div>
+
+@section('js')
+<script>
+$('#reviewModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var review = button.data('review');
+    var product = button.data('product');
+    var rating = button.data('rating');
+    var user = button.data('user');
+    
+    var modal = $(this);
+    modal.find('#modalProductName').text(product);
+    modal.find('#modalUserName').text('by ' + user);
+    
+    // Generate star rating
+    var stars = '';
+    for (var i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            stars += '<i class="fas fa-star"></i>';
+        } else {
+            stars += '<i class="far fa-star"></i>';
+        }
+    }
+    modal.find('#modalRatingStars').html(stars);
+    
+    modal.find('#modalReviewContent').text(review);
+});
+</script>
+@endsection
+
 @endsection

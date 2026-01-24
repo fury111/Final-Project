@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Organic Honey')
+@section('title', $product->name)
 
 @push('styles')
 <style>
@@ -41,6 +41,21 @@
 @endpush
 
 @section('content')
+<!-- Success/Error Messages -->
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+
 <!-- Breadcrumb -->
 <div class="breadcrumb-wrapper">
     <div class="container">
@@ -48,8 +63,8 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('category') }}">Shop</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('category') }}/groceries">Groceries</a></li>
-                <li class="breadcrumb-item active">Organic Honey</li>
+                <li class="breadcrumb-item"><a href="{{ route('category.show', $product->category->slug ?? 'uncategorized') }}">{{ $product->category->name ?? 'Uncategorized' }}</a></li>
+                <li class="breadcrumb-item active">{{ $product->name }}</li>
             </ol>
         </nav>
     </div>
@@ -60,58 +75,53 @@
         <!-- Product Gallery -->
         <div class="col-lg-6">
             <div class="product-gallery">
-                <img src="https://placehold.co/600x450/fff3cd/2D5A27?text=Organic+Honey  " 
+                <img src="{{ $product->image_path ?? 'https://placehold.co/600x450/fff3cd/2D5A27?text=' . urlencode($product->name) }}" 
                      class="product-main-image" 
-                     alt="Organic Honey" 
+                     alt="{{ $product->name }}" 
                      id="mainImage">
                 <div class="product-thumbnails">
-                    <img src="https://placehold.co/150x150/fff3cd/2D5A27?text=Front  " 
+                    <img src="{{ $product->image_path ?? 'https://placehold.co/150x150/fff3cd/2D5A27?text=Main' }}" 
                          class="product-thumb active" 
-                         alt="Front view"
-                         data-image="https://placehold.co/600x450/fff3cd/2D5A27?text=Front+View  ">
-                    <img src="https://placehold.co/150x150/ffecb3/2D5A27?text=Side  " 
-                         class="product-thumb" 
-                         alt="Side view"
-                         data-image="https://placehold.co/600x450/ffecb3/2D5A27?text=Side+View  ">
-                    <img src="https://placehold.co/150x150/ffe082/2D5A27?text=Back  " 
-                         class="product-thumb" 
-                         alt="Back view"
-                         data-image="https://placehold.co/600x450/ffe082/2D5A27?text=Back+View  ">
-                    <img src="https://placehold.co/150x150/ffd54f/2D5A27?text=Detail  " 
-                         class="product-thumb" 
-                         alt="Detail view"
-                         data-image="https://placehold.co/600x450/ffd54f/2D5A27?text=Detail+View  ">
+                         alt="Main image"
+                         data-image="{{ $product->image_path ?? 'https://placehold.co/600x450/fff3cd/2D5A27?text=' . urlencode($product->name) }}">
                 </div>
             </div>
         </div>
 
         <!-- Product Info -->
         <div class="col-lg-6">
-            <span class="badge bg-success mb-2">In Stock</span>
-            <h1 class="h2 mb-2">Organic Honey</h1>
-            <p class="text-muted mb-3">Premium raw honey from local beekeepers</p>
+            <span class="badge {{ $product->stock_quantity > 0 ? 'bg-success' : 'bg-danger' }} mb-2">
+                {{ $product->stock_quantity > 0 ? 'In Stock' : 'Out of Stock' }}
+            </span>
+            <h1 class="h2 mb-2">{{ $product->name }}</h1>
+            <p class="text-muted mb-3">{{ Str::limit($product->description, 100) }}</p>
             
             <!-- Rating -->
             <div class="d-flex align-items-center gap-2 mb-3">
                 <div class="text-warning">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-half"></i>
+                    @php
+                        $avgRatingInt = (int)round($avgRating);
+                    @endphp
+                    @for($i = 1; $i <= 5; $i++)
+                        @if($i <= $avgRatingInt)
+                            <i class="bi bi-star-fill"></i>
+                        @else
+                            <i class="bi bi-star"></i>
+                        @endif
+                    @endfor
                 </div>
-                <span class="text-muted small">(4.5) · 24 reviews</span>
+                <span class="text-muted small">({{ number_format($avgRating, 1) }}) · {{ $reviewCount }} reviews</span>
             </div>
 
             <!-- Price -->
             <div class="mb-4">
-                <span class="h3 fw-bold" style="color: var(--dd-primary);">$12.99</span>
-                <span class="text-muted small ms-2">/ 500g jar</span>
+                <span class="h3 fw-bold" style="color: var(--dd-primary);">${{ number_format($product->price, 2) }}</span>
+                <span class="text-muted small ms-2">/ unit</span>
             </div>
 
             <!-- Stock Info -->
             <p class="text-muted small mb-4">
-                <i class="bi bi-box-seam me-1"></i>25 items in stock
+                <i class="bi bi-box-seam me-1"></i>{{ $product->stock_quantity }} items in stock
             </p>
 
             <!-- Quantity & Add to Cart -->
@@ -119,19 +129,24 @@
                 <div class="quantity-selector">
                     <label class="form-label small text-muted">Quantity</label>
                     <div class="input-group">
-                        <button class="btn btn-outline-secondary" type="button">
+                        <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity()">
                             <i class="bi bi-dash"></i>
                         </button>
-                        <input type="number" class="form-control text-center" value="1" min="1" max="25">
-                        <button class="btn btn-outline-secondary" type="button">
+                        <input type="number" class="form-control text-center" id="quantity" value="1" min="1" max="{{ $product->stock_quantity }}">
+                        <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity()">
                             <i class="bi bi-plus"></i>
                         </button>
                     </div>
                 </div>
                 <div class="flex-grow-1 d-flex flex-column justify-content-end">
-                    <a href="{{ route('cart') }}" class="btn btn-primary btn-lg w-100">
-                        <i class="bi bi-cart-plus me-2"></i>Add to Cart
-                    </a>
+                    <form method="POST" action="{{ route('cart.add') }}" class="d-flex">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="quantity" value="1" id="add-to-cart-quantity">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-cart-plus me-2"></i>Add to Cart
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -140,10 +155,10 @@
                 <a href="{{ route('checkout') }}" class="btn btn-accent flex-grow-1">
                     <i class="bi bi-lightning-fill me-2"></i>Buy Now
                 </a>
-                <a href="/wishlist" class="btn btn-outline-secondary">
+                <a href="{{ route('wishlist') }}" class="btn btn-outline-secondary">
                     <i class="bi bi-heart"></i>
                 </a>
-                <button class="btn btn-outline-secondary">
+                <button class="btn btn-outline-secondary" onclick="shareProduct()">
                     <i class="bi bi-share"></i>
                 </button>
             </div>
@@ -172,7 +187,7 @@
                     <div class="col-6">
                         <div class="d-flex align-items-center gap-2">
                             <i class="bi bi-patch-check" style="color: var(--dd-primary);"></i>
-                            <span class="small">Certified organic</span>
+                            <span class="small">Certified quality</span>
                         </div>
                     </div>
                 </div>
@@ -190,7 +205,7 @@
                 <button class="nav-link" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button">Details</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button">Reviews (24)</button>
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button">Reviews ({{ $reviewCount }})</button>
             </li>
         </ul>
         <div class="tab-content pt-4" id="productTabsContent">
@@ -199,16 +214,7 @@
                 <div class="row">
                     <div class="col-lg-8">
                         <h5>About This Product</h5>
-                        <p>Our Organic Honey is sourced directly from local beekeepers who practice sustainable and ethical beekeeping. This raw, unfiltered honey retains all its natural enzymes, vitamins, and antioxidants.</p>
-                        <p>Perfect for sweetening your tea, drizzling over breakfast, or using in recipes. The rich, golden color and smooth texture make it a kitchen staple for any health-conscious home.</p>
-                        <h6 class="mt-4">Benefits:</h6>
-                        <ul>
-                            <li>100% pure and organic certified</li>
-                            <li>Raw and unfiltered for maximum nutrition</li>
-                            <li>Natural antibacterial properties</li>
-                            <li>Rich in antioxidants</li>
-                            <li>No added sugars or preservatives</li>
-                        </ul>
+                        <p>{!! nl2br(e($product->description)) !!}</p>
                     </div>
                 </div>
             </div>
@@ -219,12 +225,12 @@
                     <div class="col-lg-6">
                         <table class="table table-striped">
                             <tbody>
-                                <tr><th>Weight</th><td>500g</td></tr>
-                                <tr><th>Origin</th><td>Local Farms</td></tr>
-                                <tr><th>Certification</th><td>USDA Organic</td></tr>
-                                <tr><th>Shelf Life</th><td>24 months</td></tr>
-                                <tr><th>Storage</th><td>Cool, dry place</td></tr>
-                                <tr><th>SKU</th><td>DD-HON-001</td></tr>
+                                <tr><th>Name</th><td>{{ $product->name }}</td></tr>
+                                <tr><th>Price</th><td>${{ number_format($product->price, 2) }}</td></tr>
+                                <tr><th>Category</th><td>{{ $product->category->name ?? 'N/A' }}</td></tr>
+                                <tr><th>Stock</th><td>{{ $product->stock_quantity }}</td></tr>
+                                <tr><th>Sales Count</th><td>{{ $product->sales_count }}</td></tr>
+                                <tr><th>Slug</th><td>{{ $product->slug }}</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -240,116 +246,72 @@
                             <div class="card-body">
                                 <div class="row align-items-center">
                                     <div class="col-md-4 text-center border-end">
-                                        <div class="display-4 fw-bold" style="color: var(--dd-primary);">4.5</div>
+                                        <div class="display-4 fw-bold" style="color: var(--dd-primary);">{{ number_format($avgRating, 1) }}</div>
                                         <div class="text-warning mb-2">
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-half"></i>
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $avgRatingInt)
+                                                    <i class="bi bi-star-fill"></i>
+                                                @else
+                                                    <i class="bi bi-star"></i>
+                                                @endif
+                                            @endfor
                                         </div>
-                                        <small class="text-muted">Based on 24 reviews</small>
+                                        <small class="text-muted">Based on {{ $reviewCount }} reviews</small>
                                     </div>
                                     <div class="col-md-8">
+                                        @php
+                                            $ratingCounts = [
+                                                5 => $product->reviews->where('rating', 5)->count(),
+                                                4 => $product->reviews->where('rating', 4)->count(),
+                                                3 => $product->reviews->where('rating', 3)->count(),
+                                                2 => $product->reviews->where('rating', 2)->count(),
+                                                1 => $product->reviews->where('rating', 1)->count(),
+                                            ];
+                                            $totalCount = $product->reviews->count();
+                                        @endphp
+                                        @for($star = 5; $star >= 1; $star--)
                                         <div class="d-flex align-items-center gap-2 mb-1">
-                                            <span class="small" style="width: 60px;">5 stars</span>
+                                            <span class="small" style="width: 60px;">{{ $star }} stars</span>
                                             <div class="progress flex-grow-1" style="height: 8px;">
-                                                <div class="progress-bar bg-success" style="width: 70%;"></div>
+                                                <div class="progress-bar bg-success" style="width: {{ $totalCount > 0 ? ($ratingCounts[$star] / $totalCount) * 100 : 0 }}%;"></div>
                                             </div>
-                                            <span class="small text-muted" style="width: 20px;">17</span>
+                                            <span class="small text-muted" style="width: 20px;">{{ $ratingCounts[$star] }}</span>
                                         </div>
-                                        <div class="d-flex align-items-center gap-2 mb-1">
-                                            <span class="small" style="width: 60px;">4 stars</span>
-                                            <div class="progress flex-grow-1" style="height: 8px;">
-                                                <div class="progress-bar bg-success" style="width: 20%;"></div>
-                                            </div>
-                                            <span class="small text-muted" style="width: 20px;">5</span>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 mb-1">
-                                            <span class="small" style="width: 60px;">3 stars</span>
-                                            <div class="progress flex-grow-1" style="height: 8px;">
-                                                <div class="progress-bar bg-warning" style="width: 8%;"></div>
-                                            </div>
-                                            <span class="small text-muted" style="width: 20px;">2</span>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2 mb-1">
-                                            <span class="small" style="width: 60px;">2 stars</span>
-                                            <div class="progress flex-grow-1" style="height: 8px;">
-                                                <div class="progress-bar bg-danger" style="width: 0%;"></div>
-                                            </div>
-                                            <span class="small text-muted" style="width: 20px;">0</span>
-                                        </div>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span class="small" style="width: 60px;">1 star</span>
-                                            <div class="progress flex-grow-1" style="height: 8px;">
-                                                <div class="progress-bar bg-danger" style="width: 0%;"></div>
-                                            </div>
-                                            <span class="small text-muted" style="width: 20px;">0</span>
-                                        </div>
+                                        @endfor
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Individual Reviews -->
+                        @forelse($product->reviews->sortByDesc('created_at') as $review)
                         <div class="review-card card mb-3">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
                                     <div>
-                                        <strong>Sarah M.</strong>
+                                        <strong>{{ $review->user->name ?? 'Anonymous' }}</strong>
                                         <span class="text-warning ms-2">
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
+                                            @for($i = 1; $i <= 5; $i++)
+                                                @if($i <= $review->rating)
+                                                    <i class="bi bi-star-fill"></i>
+                                                @else
+                                                    <i class="bi bi-star"></i>
+                                                @endif
+                                            @endfor
                                         </span>
                                     </div>
-                                    <small class="text-muted">2 weeks ago</small>
+                                    <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
                                 </div>
-                                <p class="mb-0">Absolutely love this honey! The taste is incredible and you can really tell it's pure quality. Will definitely be ordering again.</p>
+                                <p class="mb-0">{{ $review->comment }}</p>
                             </div>
                         </div>
+                        @empty
+                        <div class="alert alert-info">No reviews yet. Be the first to review this product!</div>
+                        @endforelse
 
-                        <div class="review-card card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <div>
-                                        <strong>James K.</strong>
-                                        <span class="text-warning ms-2">
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star"></i>
-                                        </span>
-                                    </div>
-                                    <small class="text-muted">1 month ago</small>
-                                </div>
-                                <p class="mb-0">Great honey with a smooth texture. Only giving 4 stars because the jar was a bit sticky when it arrived, but the product itself is excellent.</p>
-                            </div>
-                        </div>
-
-                        <div class="review-card card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <div>
-                                        <strong>Emily R.</strong>
-                                        <span class="text-warning ms-2">
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                        </span>
-                                    </div>
-                                    <small class="text-muted">1 month ago</small>
-                                </div>
-                                <p class="mb-0">Best honey I've ever had! I use it every morning in my tea and it makes such a difference. Supporting local beekeepers is a bonus!</p>
-                            </div>
-                        </div>
-
+                        @if($product->reviews->count() > 3)
                         <a href="#" class="btn btn-outline-primary">Load More Reviews</a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -360,31 +322,68 @@
     <section class="mt-5">
         <h4 class="mb-4">You May Also Like</h4>
         <div class="row g-4">
+            @foreach($relatedProducts as $relatedProduct)
             <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Maple Syrup Pure', 'price' => 14.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/d7ccc8/2D5A27?text=Maple+Syrup  ', 'slug' => 'maple-syrup', 'stock' => 18]])
+                <div class="card h-100">
+                    <img src="{{ $relatedProduct->image_path ?? 'https://placehold.co/200x200' }}" class="card-img-top" alt="{{ $relatedProduct->name }}">
+                    <div class="card-body">
+                        <h6 class="card-title">{{ $relatedProduct->name }}</h6>
+                        <p class="card-text text-muted small">{{ $relatedProduct->category->name ?? 'Uncategorized' }}</p>
+                        <p class="card-text">
+                            <strong>${{ number_format($relatedProduct->price, 2) }}</strong>
+                        </p>
+                    </div>
+                </div>
             </div>
-            <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Agave Nectar', 'price' => 9.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/c8e6c9/2D5A27?text=Agave  ', 'slug' => 'agave-nectar', 'stock' => 30]])
-            </div>
-            <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Coconut Sugar', 'price' => 7.49, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/efebe9/2D5A27?text=Coconut+Sugar  ', 'slug' => 'coconut-sugar', 'stock' => 45]])
-            </div>
-            <div class="col-6 col-md-4 col-lg-3">
-                @include('components.product-card', ['product' => ['name' => 'Raw Cane Sugar', 'price' => 5.99, 'category' => 'Groceries', 'image' => 'https://placehold.co/400x300/fff8e1/2D5A27?text=Cane+Sugar  ', 'slug' => 'raw-cane-sugar', 'stock' => 60]])
-            </div>
+            @endforeach
         </div>
     </section>
 </div>
 
 @push('scripts')
 <script>
-    // Thumbnail click handler
-    document.querySelectorAll('.product-thumb').forEach(thumb => {
-        thumb.addEventListener('click', function() {
-            document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
-            this.classList.add('active');
-            document.getElementById('mainImage').src = this.dataset.image;
-        });
+    function decreaseQuantity() {
+        const quantityInput = document.getElementById('quantity');
+        let currentValue = parseInt(quantityInput.value);
+        if (currentValue > 1) {
+            quantityInput.value = currentValue - 1;
+        }
+        updateAddToCartQuantity();
+    }
+
+    function increaseQuantity() {
+        const quantityInput = document.getElementById('quantity');
+        let currentValue = parseInt(quantityInput.value);
+        const maxStock = {{ $product->stock_quantity }};
+        if (currentValue < maxStock) {
+            quantityInput.value = currentValue + 1;
+        }
+        updateAddToCartQuantity();
+    }
+
+    function updateAddToCartQuantity() {
+        const quantityInput = document.getElementById('quantity');
+        const addToCartInput = document.getElementById('add-to-cart-quantity');
+        addToCartInput.value = quantityInput.value;
+    }
+
+    function shareProduct() {
+        if (navigator.share) {
+            navigator.share({
+                title: '{{ $product->name }}',
+                text: '{{ Str::limit($product->description, 100) }}',
+                url: window.location.href
+            }).catch(console.error);
+        } else {
+            // Fallback: copy to clipboard
+            navigator.clipboard.writeText(window.location.href);
+            alert('Product URL copied to clipboard!');
+        }
+    }
+
+    // Initialize the add to cart quantity
+    document.addEventListener('DOMContentLoaded', function() {
+        updateAddToCartQuantity();
     });
 </script>
 @endpush

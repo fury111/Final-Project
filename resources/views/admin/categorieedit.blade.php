@@ -1,5 +1,3 @@
-
-
 @extends('layouts.admin_master') <!-- Use the layout -->
 
 @section('title', 'Dashboard') <!-- Set the page title -->
@@ -9,73 +7,115 @@
     <!-- Example: <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet"> -->
 @endsection
 
-
-@section('content')
-
+@section('content') 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Add New Category</h1>
-    <a href="{{ route('admin.categories.index') }}" class="btn btn-sm btn-secondary shadow-sm">
-        <i class="fas fa-arrow-left fa-sm text-white-50"></i> Back to Categories
+    <h1 class="h3 mb-0 text-gray-800">Edit Product</h1>
+    <a href="{{ route('admin.products.index') }}" class="btn btn-sm btn-secondary shadow-sm">
+        <i class="fas fa-arrow-left fa-sm text-white-50"></i> Back to List
     </a>
 </div>
 
 <div class="row">
-    <div class="col-lg-7">
+    <div class="col-lg-8">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Category Details</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Product Details</h6>
             </div>
             <div class="card-body">
-                <form action="{{-- route('categories.store') --}}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')  <!-- This is essential for update -->
 
                     <div class="form-group">
-                        <label for="name" class="font-weight-bold">Category Name</label>
-                        <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="e.g. Electronics or Summer Collection" value="{{ old('name') }}" required>
+                        <label for="name" class="font-weight-bold">Product Name</label>
+                        <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" placeholder="e.g. Wireless Headphones" value="{{ old('name', $product->name) }}" required>
                         @error('name')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group">
                         <label for="description" class="font-weight-bold">Product Description</label>
-                        <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" placeholder="Enter product description here..." rows="4">{{ old('description') }}</textarea>
+                        <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror" placeholder="Enter product description here..." rows="4">{{ old('description', $product->description) }}</textarea>
                         @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="form-group">
-                        <label for="parent_id" class="font-weight-bold">Parent Category (Optional)</label>
-                        <select name="parent_id" id="parent_id" class="form-control">
-                            <option value="">None (Top Level)</option>
-                            {{-- Replace with @foreach($categories as $cat) --}}
-                            <option value="1">Electronics</option>
-                            <option value="2">Fashion</option>
-                            {{-- End @foreach --}}
-                        </select>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="category_id" class="font-weight-bold">Category</label>
+                                <select name="category_id" id="category_id" class="form-control @error('category_id') is-invalid @enderror" required>
+                                    <option value="">Select Category</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('category_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="price" class="font-weight-bold">Price ($)</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" step="0.01" name="price" id="price" class="form-control @error('price') is-invalid @enderror" placeholder="0.00" value="{{ old('price', $product->price) }}" required>
+                                </div>
+                                @error('price')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="image" class="font-weight-bold">Category Image/Icon</label>
-                        <div class="custom-file">
-                            <input type="file" name="image" class="custom-file-input @error('image') is-invalid @enderror" id="categoryImage" accept="image/*">
-                            <label class="custom-file-label" for="categoryImage">Choose category image...</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="stock" class="font-weight-bold">Stock Amount</label>
+                                <input type="number" name="stock_quantity" id="stock" class="form-control @error('stock_quantity') is-invalid @enderror" placeholder="0" value="{{ old('stock_quantity', $product->stock_quantity) }}" required>
+                                @error('stock_quantity')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
-                        <small class="form-text text-muted">A clear icon or representative image (Max 1MB).</small>
-                        @error('image')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="image" class="font-weight-bold">Product Image</label>
+                                @if($product->image_path)
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $product->image_path) }}" 
+                                             alt="{{ $product->name }}" 
+                                             class="img-thumbnail" 
+                                             style="max-width: 150px;">
+                                    </div>
+                                @endif
+                                <div class="custom-file">
+                                    <input type="file" name="image" class="custom-file-input @error('image') is-invalid @enderror" id="customFile" accept="image/*">
+                                    <label class="custom-file-label" for="customFile">Choose file</label>
+                                </div>
+                                <small class="form-text text-muted">Recommended size: 800x800px (Max 2MB).</small>
+                                @error('image')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
                     <hr>
 
                     <div class="form-group mb-0">
-                        <button type="submit" class="btn btn-primary btn-icon-split shadow-sm">
-                            <span class="icon text-white-50">
-                                <i class="fas fa-check"></i>
-                            </span>
-                            <span class="text">Edit Category</span>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="fas fa-save mr-1"></i> Save Product
                         </button>
+                        <button type="reset" class="btn btn-light border px-4 ml-2">Reset</button>
                     </div>
 
                 </form>
@@ -83,21 +123,21 @@
         </div>
     </div>
 
-    <div class="col-lg-5">
+    <div class="col-lg-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-eye mr-1"></i> Image Preview</h6>
+                <h6 class="m-0 font-weight-bold text-info"><i class="fas fa-info-circle mr-1"></i> Quick Tips</h6>
             </div>
-            <div class="card-body text-center">
-                <div class="p-3 border rounded bg-light mb-3" style="min-height: 200px; display: flex; align-items: center; justify-content: center;">
-                    <img id="preview-img" src="https://dummyimage.com/200x200/dddfeb/6e707e.png&text=No+Image" alt="Preview" class="img-fluid rounded shadow-sm" style="max-height: 180px;">
-                </div>
-                <p class="text-muted small">This image will appear on your store's navigation or category grid.</p>
+            <div class="card-body">
+                <p class="small">Provide a clear and concise product name for better search results.</p>
+                <p class="small">Ensure your <strong>stock amount</strong> is accurate to prevent overselling on the storefront.</p>
+                <p class="small mb-0">Images should be in <strong>JPG or PNG</strong> format for faster loading times.</p>
             </div>
         </div>
     </div>
 </div>
 @endsection
+
 
 @section('js')
    

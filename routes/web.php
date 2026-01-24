@@ -45,19 +45,24 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/account', [App\Http\Controllers\AccountController::class, 'update'])->name('account.update');
 
     // Addresses
-    Route::get('/addresses', function () {
-        return view('user.addresses');
-    })->name('addresses');
+    Route::get('/addresses', [App\Http\Controllers\AddressController::class, 'index'])->name('addresses');
+    Route::get('/addresses/create', [App\Http\Controllers\AddressController::class, 'create'])->name('addresses.create');
+    Route::post('/addresses', [App\Http\Controllers\AddressController::class, 'store'])->name('addresses.store');
+    Route::get('/addresses/{id}/edit', [App\Http\Controllers\AddressController::class, 'edit'])->name('addresses.edit');
+    Route::put('/addresses/{id}', [App\Http\Controllers\AddressController::class, 'update'])->name('addresses.update');
+    Route::delete('/addresses/{id}', [App\Http\Controllers\AddressController::class, 'destroy'])->name('addresses.destroy');
 
     // Cart Management
     Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart');
     Route::post('/cart/add', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{id}', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
+    Route::post('/cart/clear', [App\Http\Controllers\CartController::class, 'clear'])->name('cart.clear');
 
     // Checkout
-    Route::get('/checkout', function () {
-        return view('user.checkout');
-    })->name('checkout');
+    Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [App\Http\Controllers\CheckoutController::class, 'store'])->name('checkout.store');
+    Route::get('/order/confirm/{id}', [App\Http\Controllers\OrderController::class, 'show'])->name('order.confirm');
 
     // Order Management
     Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders');
@@ -76,19 +81,19 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 Route::get('/about', function () {
-    return view('user.about');
+        return view('user.about');
 })->name('about');
 
 Route::get('/contact', function () {
-    return view('user.contact');
+        return view('user.contact');
 })->name('contact');
 
 Route::get('/deals', function () {
-    return view('user.deals');
+        return view('user.deals');
 })->name('deals');
 
 Route::get('/faq', function () {
-    return view('user.faq');
+        return view('user.faq');
 })->name('faq');
 
 // Category Routes
@@ -98,7 +103,7 @@ Route::get('/category/{slug}', [App\Http\Controllers\CategoryController::class, 
 // Product Routes
 Route::get('/product/{slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('product');
 Route::get('/product-page', function () {
-    return view('user.product-page');
+        return view('user.product-page');
 })->name('product.page');
 
 // ========================================
@@ -107,10 +112,7 @@ Route::get('/product-page', function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     // Admin Login Routes
     Route::middleware('guest:admin')->group(function () {
-        Route::get('/login', function () {
-            return view('admin.auth.login');
-        })->name('login');
-
+        Route::get('/login', [App\Http\Controllers\Admin\LoginController::class, 'showLoginForm'])->name('login');
         Route::post('/login', [App\Http\Controllers\Admin\LoginController::class, 'login'])->name('login.submit');
     });
 
@@ -119,63 +121,52 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // Protected Admin Routes
     Route::middleware(['auth:admin'])->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        // Dashboard
+        Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
 
-        // Admin Management Routes
-        Route::get('/products', function () {
-            return view('admin.products');
-        })->name('products.index');
+        // Product Management (Resource Routes)
+        Route::resource('products', App\Http\Controllers\Admin\ProductController::class);
+        
+        // Category Management (Resource Routes)
+        Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
 
-        Route::get('/products/create', function () {
-            return view('admin.productcreate');
-        })->name('products.create');
+        // Order Management (Resource Routes)
+        Route::resource('orders', App\Http\Controllers\Admin\OrderController::class)->except(['create', 'store']);
 
-        Route::get('/products/edit', function () {
-            return view('admin.productedit');
-        })->name('products.edit');
+        // User Management
+        Route::get('/users', [App\Http\Controllers\Admin\UserController::class, 'users'])->name('users.index');
+        Route::get('/users/create', [App\Http\Controllers\Admin\UserController::class, 'create'])->name('users.create');
+        Route::get('/users/profile', [App\Http\Controllers\Admin\UserController::class, 'profile'])->name('users.profile');
 
-        Route::get('/categories', function () {
-            return view('admin.categories');
-        })->name('categories.index');
+        // Profile Management
+        Route::get('/profile', [App\Http\Controllers\Admin\UserController::class, 'profile'])->name('profile');
+        Route::put('/profile', [App\Http\Controllers\Admin\UserController::class, 'updateProfile'])->name('profile.update');
 
-        Route::get('/categories/create', function () {
-            return view('admin.categoriecreate');
-        })->name('categories.create');
+        // Coupon Management (Resource Routes)
+        Route::resource('coupon', App\Http\Controllers\Admin\CouponController::class);
 
-        Route::get('/categories/edit', function () {
-            return view('admin.categorieedit');
-        })->name('categories.edit');
+        // Discount Management (Resource Routes)
+        Route::resource('discounts', App\Http\Controllers\Admin\DiscountController::class)->names([
+            'index' => 'discounts.index',
+            'create' => 'discounts.create',
+            'store' => 'discounts.store',
+            'show' => 'discounts.show',
+            'edit' => 'discounts.edit',
+            'update' => 'discounts.update',
+            'destroy' => 'discounts.destroy',
+        ]);
 
-        Route::get('/orders', function () {
-            return view('admin.orders');
-        })->name('orders.index');
+        // Flash Sales Management (Resource Routes)
+        Route::resource('flashsales', App\Http\Controllers\Admin\FlashSaleController::class)->names([
+            'index' => 'admin.flashsales.index',
+            'store' => 'admin.flashsales.store',
+            'update' => 'admin.flashsales.update',
+            'destroy' => 'admin.flashsales.destroy',
+        ]);
 
-        Route::get('/users', function () {
-            return view('admin.users');
-        })->name('users.index');
-
-        Route::get('/users/create', function () {
-            return view('admin.userscreate');
-        })->name('users.create');
-
-        Route::get('/users/profile', function () {
-            return view('admin.adminprofile');
-        })->name('users.profile');
-
-        // Coupon Management
-        Route::get('/coupon', function () {
-            return view('admin.coupon');
-        })->name('coupon.index');
-
-        Route::get('/coupon/create', function () {
-            return view('admin.couponcreate');
-        })->name('coupon.create');
-
-        Route::get('/coupon/edit', function () {
-            return view('admin.couponedit');
-        })->name('coupon.edit');
+        // Add the toggle route separately
+        Route::put('/flashsales/toggle', [App\Http\Controllers\Admin\FlashSaleController::class, 'toggleGlobal'])
+            ->name('admin.flashsales.toggle');
 
         // Promo Management
         Route::get('/promo', function () {
@@ -190,31 +181,30 @@ Route::prefix('admin')->name('admin.')->group(function () {
             return view('admin.promobanneredit');
         })->name('promo.edit');
 
-        // Flash Sales Management
-        Route::get('/promo/flashsales', function () {
-            return view('admin.flashsale');
-        })->name('promo.flashsales');
-
+        // Legacy Flash Sales Routes (for backward compatibility)
+        Route::get('/promo/flashsales', [App\Http\Controllers\Admin\FlashSaleController::class, 'index'])->name('promo.flashsales');
         Route::get('/promo/flashsales/create', function () {
             return view('admin.flashsalescreate');
         })->name('promo.flashsales.create');
-
         Route::get('/promo/flashsales/edit', function () {
             return view('admin.flashsalesedit');
         })->name('promo.flashsales.edit');
 
-        // Reviews & Ratings
-        Route::get('/promo/ratings', function () {
-            return view('admin.ratings');
-        })->name('promo.ratings');
+        // Reviews & Ratings (Individual Routes - FIXED)
+        Route::get('/ratings', [App\Http\Controllers\Admin\RatingController::class, 'index'])->name('admin.ratings.index');
+        Route::delete('/ratings/{id}', [App\Http\Controllers\Admin\RatingController::class, 'destroy'])->name('admin.ratings.destroy');
 
-        Route::get('/promo/reviews', function () {
-            return view('admin.reviews');
-        })->name('promo.reviews');
+        Route::get('/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('admin.reviews.index');
+        Route::delete('/reviews/{id}', [App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('admin.reviews.destroy');
 
-        Route::get('/promo/discounts', function () {
-            return view('admin.discounts');
-        })->name('promo.discounts');
+        // Add custom review actions
+        Route::put('/reviews/{id}/approve', [App\Http\Controllers\Admin\ReviewController::class, 'approve'])->name('admin.reviews.approve');
+        Route::put('/reviews/{id}/hide', [App\Http\Controllers\Admin\ReviewController::class, 'hide'])->name('admin.reviews.hide');
+
+        // Legacy Routes (for backward compatibility)
+        Route::get('/promo/ratings', [App\Http\Controllers\Admin\RatingController::class, 'index'])->name('promo.ratings');
+        Route::get('/promo/reviews', [App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('promo.reviews');
+        Route::get('/promo/discounts', [App\Http\Controllers\Admin\DiscountController::class, 'index'])->name('promo.discounts');
     });
 });
 

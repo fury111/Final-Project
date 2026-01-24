@@ -54,59 +54,44 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($reviews as $review)
                     <tr>
-                        <td>101</td>
-                        <td class="font-weight-bold">Sony WH-1000XM5</td>
-                        <td>john.doe@example.com</td>
+                        <td>{{ $review->id }}</td>
+                        <td class="font-weight-bold">{{ $review->product->name ?? 'N/A' }}</td>
+                        <td>{{ $review->user->email ?? 'Guest' }}</td>
                         <td>
                             <span class="text-warning">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $review->rating)
+                                        <i class="fas fa-star"></i>
+                                    @else
+                                        <i class="far fa-star"></i>
+                                    @endif
+                                @endfor
                             </span>
-                            <span class="small text-muted">(5.0)</span>
+                            <span class="small text-muted">({{ $review->rating }}.0)</span>
                         </td>
-                        <td>2023-10-25</td>
+                        <td>{{ $review->created_at ? $review->created_at->format('Y-m-d') : 'N/A' }}</td>
                         <td class="text-center">
-                            <button class="btn btn-sm btn-danger rounded-circle" title="Delete Rating">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <form action="/admin/reviews/{{ $review->id }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger rounded-circle" title="Delete Rating" 
+                                        onclick="return confirm('Are you sure you want to delete this rating?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
-                    <tr>
-                        <td>102</td>
-                        <td class="font-weight-bold">Generic USB Cable</td>
-                        <td>jane.smith@example.com</td>
-                        <td>
-                            <span class="text-warning">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i> <i class="far fa-star"></i>
-                                <i class="far fa-star"></i>
-                            </span>
-                            <span class="small text-muted">(2.0)</span>
-                        </td>
-                        <td>2023-10-24</td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-danger rounded-circle" title="Delete Rating">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
         
         <div class="d-flex justify-content-between align-items-center mt-3">
-            <div class="small text-muted">Showing 1 to 2 of 50</div>
+            <div class="small text-muted">Showing 1 to {{ $reviews->count() }} of {{ $reviews->total() }}</div>
             <nav>
-                <ul class="pagination pagination-sm mb-0">
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                </ul>
+                {{ $reviews->links('pagination::bootstrap-4') }}
             </nav>
         </div>
     </div>

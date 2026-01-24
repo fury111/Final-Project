@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-<!-- Hero Carousel -->
+
 <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
@@ -12,7 +12,7 @@
     </div>
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="https://placehold.co/1920x500/2D5A27/ffffff?text=Best+Sellers+-+Up+to+30%25+Off        " class="d-block w-100" alt="Best Sellers">
+            <img src="https://placehold.co/1920x500/2D5A27/ffffff?text=Best+Sellers+-+Up+to+30%25+Off" class="d-block w-100" alt="Best Sellers">
             <div class="carousel-caption d-none d-md-block">
                 <h2 class="display-4 fw-bold">Best Sellers</h2>
                 <p class="lead">Shop our most popular daily essentials</p>
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="carousel-item">
-            <img src="https://placehold.co/1920x500/E67E22/ffffff?text=New+Arrivals        " class="d-block w-100" alt="New Arrivals">
+            <img src="https://placehold.co/1920x500/E67E22/ffffff?text=New+Arrivals" class="d-block w-100" alt="New Arrivals">
             <div class="carousel-caption d-none d-md-block">
                 <h2 class="display-4 fw-bold">New Arrivals</h2>
                 <p class="lead">Discover fresh products just added</p>
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="carousel-item">
-            <img src="https://placehold.co/1920x500/C0392B/ffffff?text=Flash+Sale+-+Today+Only        !" class="d-block w-100" alt="Flash Sale">
+            <img src="https://placehold.co/1920x500/C0392B/ffffff?text=Flash+Sale+-+Today+Only!" class="d-block w-100" alt="Flash Sale">
             <div class="carousel-caption d-none d-md-block">
                 <h2 class="display-4 fw-bold">Flash Sale</h2>
                 <p class="lead">Limited time offers on everyday items</p>
@@ -89,95 +89,95 @@
         </div>
     </section>
 
-    <!-- Featured Products Section -->
-    <section class="mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="h4 mb-0">Featured Products</h2>
-            <a href="{{ route('category') }}" class="btn btn-outline-primary btn-sm">View All</a>
-        </div>
-        <div class="row g-4">
-            @foreach($featuredProducts as $product)
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="{{ route('product', ['slug' => $product->slug]) }}" class="text-decoration-none">
-                        @include('components.product-card', [
-                            'product' => [
-                                'name' => $product->name,
-                                'price' => $product->price,
-                                'category' => $product->category->name ?? 'Uncategorized',
-                                'image' => $product->image_path,
-                                'slug' => $product->slug,
-                                'stock' => $product->stock_quantity,
-                                'sale' => $product->flashSale ? true : false,
-                                'old_price' => $product->flashSale ? $product->price * 1.2 : null
-                            ]
-                        ])
-                    </a>
-                </div>
-            @endforeach
-        </div>
-    </section>
-
-    <!-- Best Sellers Section -->
-    <section class="mb-5">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="h4 mb-0">Best Sellers</h2>
-            <a href="{{ route('category') }}" class="btn btn-outline-primary btn-sm">View All</a>
-        </div>
-        <div class="row g-4">
-            @foreach($bestSellers as $product)
-                <div class="col-6 col-md-4 col-lg-3">
-                    <a href="{{ route('product', ['slug' => $product->slug]) }}" class="text-decoration-none">
-                        @include('components.product-card', [
-                            'product' => [
-                                'name' => $product->name,
-                                'price' => $product->price,
-                                'category' => $product->category->name ?? 'Uncategorized',
-                                'image' => $product->image_path,
-                                'slug' => $product->slug,
-                                'stock' => $product->stock_quantity,
-                                'sale' => $product->flashSale ? true : false,
-                                'old_price' => $product->flashSale ? $product->price * 1.2 : null
-                            ]
-                        ])
-                    </a>
-                </div>
-            @endforeach
-        </div>
-    </section>
-
-    <!-- Sale Items Section -->
-    <section class="mb-5">
-        <div class="p-4 p-md-5 rounded-3" style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <span class="badge bg-danger mb-2">Limited Time</span>
-                    <h2 class="h4 mb-0">On Sale Now</h2>
-                </div>
-                <a href="{{ route('deals') }}" class="btn btn-danger btn-sm">Shop All Sale</a>
-            </div>
-            <div class="row g-4">
-                @foreach($onSale as $product)
-                    <div class="col-6 col-md-4 col-lg-3">
-                        <a href="{{ route('product', ['slug' => $product->slug]) }}" class="text-decoration-none">
-                            @include('components.product-card', [
-                                'product' => [
-                                    'name' => $product->name,
-                                    'price' => $product->price,
-                                    'category' => $product->category->name ?? 'Uncategorized',
-                                    'image' => $product->image_path,
-                                    'slug' => $product->slug,
-                                    'stock' => $product->stock_quantity,
-                                    'sale' => true,
-                                    'old_price' => $product->price * 1.2
-                                ]
-                            ])
-                        </a>
+   <!-- Featured Products Section -->
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 mb-0">Featured Products</h2>
+        <a href="{{ route('category') }}" class="btn btn-outline-primary btn-sm">View All</a>
+    </div>
+    <div class="row g-4">
+        @foreach($featuredProducts as $product)
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="{{ route('product', ['slug' => $product['slug']]) }}" class="text-decoration-none">
+                    <div class="card h-100">
+                        <img src="{{ $product['image'] }}" class="card-img-top" alt="{{ $product['name'] }}">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ $product['name'] }}</h6>
+                            <p class="card-text text-muted small">{{ $product['category'] }}</p>
+                            <p class="card-text">
+                                <strong>${{ number_format($product['price'], 2) }}</strong>
+                                @if($product['old_price'])
+                                    <small class="text-muted text-decoration-line-through">${{ number_format($product['old_price'], 2) }}</small>
+                                @endif
+                            </p>
+                        </div>
                     </div>
-                @endforeach
+                </a>
             </div>
-        </div>
-    </section>
+        @endforeach
+    </div>
+</section>
 
+<!-- Best Sellers Section -->
+<section class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 mb-0">Best Sellers</h2>
+        <a href="{{ route('category') }}" class="btn btn-outline-primary btn-sm">View All</a>
+    </div>
+    <div class="row g-4">
+        @foreach($bestSellers as $product)
+            <div class="col-6 col-md-4 col-lg-3">
+                <a href="{{ route('product', ['slug' => $product['slug']]) }}" class="text-decoration-none">
+                    <div class="card h-100">
+                        <img src="{{ $product['image'] }}" class="card-img-top" alt="{{ $product['name'] }}">
+                        <div class="card-body">
+                            <h6 class="card-title">{{ $product['name'] }}</h6>
+                            <p class="card-text text-muted small">{{ $product['category'] }}</p>
+                            <p class="card-text">
+                                <strong>${{ number_format($product['price'], 2) }}</strong>
+                                @if($product['old_price'])
+                                    <small class="text-muted text-decoration-line-through">${{ number_format($product['old_price'], 2) }}</small>
+                                @endif
+                            </p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        @endforeach
+    </div>
+</section>
+
+<!-- Sale Items Section -->
+<section class="mb-5">
+    <div class="p-4 p-md-5 rounded-3" style="background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="badge bg-danger mb-2">Limited Time</span>
+                <h2 class="h4 mb-0">On Sale Now</h2>
+            </div>
+            <a href="{{ route('deals') }}" class="btn btn-danger btn-sm">Shop All Sale</a>
+        </div>
+        <div class="row g-4">
+            @foreach($onSale as $product)
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="{{ route('product', ['slug' => $product['slug']]) }}" class="text-decoration-none">
+                        <div class="card h-100">
+                            <img src="{{ $product['image'] }}" class="card-img-top" alt="{{ $product['name'] }}">
+                            <div class="card-body">
+                                <h6 class="card-title">{{ $product['name'] }}</h6>
+                                <p class="card-text text-muted small">{{ $product['category'] }}</p>
+                                <p class="card-text">
+                                    <strong>${{ number_format($product['price'], 2) }}</strong>
+                                    <small class="text-muted text-decoration-line-through">${{ number_format($product['old_price'], 2) }}</small>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
     <!-- Why Choose Us -->
     <section class="mb-5">
         <h2 class="h4 mb-4 text-center">Why Choose Daily Dose?</h2>

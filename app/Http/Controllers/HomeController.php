@@ -21,7 +21,7 @@ class HomeController extends Controller
                     'name' => $product->name,
                     'price' => $product->price,
                     'category' => $product->category->name ?? 'Uncategorized',
-                    'image' => $product->image_path,
+                    'image' => $product->image_path, // This will use the accessor we defined
                     'slug' => $product->slug,
                     'stock' => $product->stock_quantity,
                     'sale' => $product->flashSale ? true : false,
@@ -40,7 +40,7 @@ class HomeController extends Controller
                     'name' => $product->name,
                     'price' => $product->price,
                     'category' => $product->category->name ?? 'Uncategorized',
-                    'image' => $product->image_path,
+                    'image' => $product->image_path, // This will use the accessor we defined
                     'slug' => $product->slug,
                     'stock' => $product->stock_quantity,
                     'sale' => $product->flashSale ? true : false,
@@ -59,7 +59,7 @@ class HomeController extends Controller
                     'name' => $product->name,
                     'price' => $product->price,
                     'category' => $product->category->name ?? 'Uncategorized',
-                    'image' => $product->image_path,
+                    'image' => $product->image_path, // This will use the accessor we defined
                     'slug' => $product->slug,
                     'stock' => $product->stock_quantity,
                     'sale' => true,
