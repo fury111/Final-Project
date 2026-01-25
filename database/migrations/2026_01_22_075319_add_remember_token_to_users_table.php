@@ -8,15 +8,15 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::table('flash_sales', function (Blueprint $table) {
-            $table->boolean('is_active')->default(true); // Add is_active column
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('remember_token', 100)->nullable()->after('password');
         });
     }
 
     public function down()
     {
-        Schema::table('flash_sales', function (Blueprint $table) {
-            $table->dropColumn('is_active');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('remember_token');
         });
     }
 };
