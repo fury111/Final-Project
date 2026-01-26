@@ -10,13 +10,8 @@ class AddressController extends Controller
 {
     public function index()
     {
-        $addresses = Address::where('user_id', Auth::id())->get();
+        $addresses = Address::where('user_id', Auth::id())->orderBy('is_default', 'desc')->get();
         return view('user.addresses', compact('addresses'));
-    }
-
-    public function create()
-    {
-        return view('user.addresses.create');
     }
 
     public function store(Request $request)
@@ -30,7 +25,13 @@ class AddressController extends Controller
             'state' => 'required|string|max:100',
             'postal_code' => 'required|string|max:20',
             'country' => 'required|string|max:100',
+            'phone' => 'nullable|string|max:20',
         ]);
+
+        // If setting as default, unset others
+        if ($request->is_default) {
+            Address::where('user_id', Auth::id())->update(['is_default' => false]);
+        }
 
         Address::create([
             'user_id' => Auth::id(),
@@ -41,21 +42,18 @@ class AddressController extends Controller
             'city' => $request->city,
             'state' => $request->state,
             'postal_code' => $request->postal_code,
-            'country' => $request->country,
-            'is_default' => $request->has('is_default'),
+            'country' => $request->country ?? 'United States',
+            'phone' => $request->phone,
+            'is_default' => $request->is_default ?? false,
         ]);
 
-        return redirect()->route('addresses')->with('success', 'Address saved successfully!');
-    }
-
-    public function edit($id)
-    {
-        $address = Address::where('user_id', Auth::id())->findOrFail($id);
-        return view('user.addresses.edit', compact('address'));
+        return redirect()->route('addresses')->with('success', 'Address added successfully!');
     }
 
     public function update(Request $request, $id)
     {
+        $address = Address::where('user_id', Auth::id())->findOrFail($id);
+
         $request->validate([
             'label' => 'required|string|max:50',
             'full_name' => 'required|string|max:255',
@@ -65,13 +63,26 @@ class AddressController extends Controller
             'state' => 'required|string|max:100',
             'postal_code' => 'required|string|max:20',
             'country' => 'required|string|max:100',
+            'phone' => 'nullable|string|max:20',
         ]);
 
-        $address = Address::where('user_id', Auth::id())->findOrFail($id);
-        $address->update($request->only([
-            'label', 'full_name', 'address_line1', 'address_line2',
-            'city', 'state', 'postal_code', 'country'
-        ]));
+        // If setting as default, unset others
+        if ($request->is_default) {
+            Address::where('user_id', Auth::id())->update(['is_default' => false]);
+        }
+
+        $address->update([
+            'label' => $request->label,
+            'full_name' => $request->full_name,
+            'address_line1' => $request->address_line1,
+            'address_line2' => $request->address_line2,
+            'city' => $request->city,
+            'state' => $request->state,
+            'postal_code' => $request->postal_code,
+            'country' => $request->country,
+            'phone' => $request->phone,
+            'is_default' => $request->is_default ?? false,
+        ]);
 
         return redirect()->route('addresses')->with('success', 'Address updated successfully!');
     }
@@ -82,5 +93,18 @@ class AddressController extends Controller
         $address->delete();
 
         return redirect()->route('addresses')->with('success', 'Address deleted successfully!');
+    }
+
+    public function setDefault($id)
+    {
+        $address = Address::where('user_id', Auth::id())->findOrFail($id);
+        
+        // Unset all defaults
+        Address::where('user_id', Auth::id())->update(['is_default' => false]);
+        
+        // Set this one as default
+        $address->update(['is_default' => true]);
+
+        return redirect()->route('addresses')->with('success', 'Default address updated!');
     }
 }

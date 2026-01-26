@@ -91,89 +91,12 @@
                     </div>
                 </div>
 
-                <!-- Shipping Method -->
-                <div class="card mb-4">
-                    <div class="card-header bg-white">
-                        <h5 class="mb-0"><i class="bi bi-truck me-2"></i>Shipping Method</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-check mb-3 p-3 border rounded">
-                            <input class="form-check-input" type="radio" name="shipping_method" id="standard" value="standard" checked>
-                            <label class="form-check-label w-100" for="standard">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>Standard Shipping</strong>
-                                        <p class="text-muted small mb-0">5-7 business days</p>
-                                    </div>
-                                    <span class="text-success fw-bold">FREE</span>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="form-check mb-3 p-3 border rounded">
-                            <input class="form-check-input" type="radio" name="shipping_method" id="express" value="express">
-                            <label class="form-check-label w-100" for="express">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>Express Shipping</strong>
-                                        <p class="text-muted small mb-0">2-3 business days</p>
-                                    </div>
-                                    <span class="fw-bold">$9.99</span>
-                                </div>
-                            </label>
-                        </div>
-                        <div class="form-check p-3 border rounded">
-                            <input class="form-check-input" type="radio" name="shipping_method" id="overnight" value="overnight">
-                            <label class="form-check-label w-100" for="overnight">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>Overnight Shipping</strong>
-                                        <p class="text-muted small mb-0">Next business day</p>
-                                    </div>
-                                    <span class="fw-bold">$19.99</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Payment Method -->
                 <div class="card">
                     <div class="card-header bg-white">
                         <h5 class="mb-0"><i class="bi bi-credit-card me-2"></i>Payment Method</h5>
                     </div>
                     <div class="card-body">
-                        <div class="mb-4">
-                            <div class="form-check mb-3 p-3 border rounded">
-                                <input class="form-check-input" type="radio" name="payment_method" id="creditCard" value="credit_card" checked>
-                                <label class="form-check-label w-100" for="creditCard">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span><i class="bi bi-credit-card me-2"></i>Credit / Debit Card</span>
-                                        <img src="https://placehold.co/100x24/f5f5f5/999999?text=Cards" alt="Cards">
-                                    </div>
-                                </label>
-                            </div>
-                            
-                            <div class="form-check mb-3 p-3 border rounded">
-                                <input class="form-check-input" type="radio" name="payment_method" id="paypal" value="paypal">
-                                <label class="form-check-label w-100" for="paypal">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span><i class="bi bi-paypal me-2"></i>PayPal</span>
-                                        <span class="text-primary fw-bold">PayPal</span>
-                                    </div>
-                                </label>
-                            </div>
-
-                            <div class="form-check p-3 border rounded">
-                                <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod">
-                                <label class="form-check-label w-100" for="cod">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span><i class="bi bi-cash me-2"></i>Cash on Delivery</span>
-                                        <span class="badge bg-secondary">+$2.00</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
                         <!-- Credit Card Form -->
                         <div id="creditCardForm">
                             <div class="row g-3">
@@ -203,7 +126,9 @@
                     </div>
                 </div>
                 
-                <input type="hidden" name="total_amount" value="{{ $total }}">
+                <input type="hidden" name="total_amount" value="{{ $finalTotal }}">
+                <input type="hidden" name="discount_amount" value="{{ $discountAmount ?? 0 }}">
+                <input type="hidden" name="applied_coupon" value="{{ $appliedCouponCode ?? '' }}">
             </form>
         </div>
 
@@ -239,10 +164,17 @@
                         <span class="text-muted">Subtotal</span>
                         <span>${{ number_format($subtotal, 2) }}</span>
                     </div>
+                    @if($appliedCouponCode && $discountAmount > 0)
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted">Discount</span>
+                        <span class="text-success">-${{ number_format($discountAmount, 2) }}</span>
+                    </div>
+                    @else
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">Discount</span>
                         <span class="text-success">-$0.00</span>
                     </div>
+                    @endif
                     <div class="d-flex justify-content-between mb-2">
                         <span class="text-muted">Shipping</span>
                         <span class="text-success">Free</span>
@@ -254,7 +186,7 @@
                     <hr>
                     <div class="d-flex justify-content-between mb-4">
                         <strong>Total</strong>
-                        <strong class="fs-4" style="color: var(--dd-primary);">${{ number_format($total, 2) }}</strong>
+                        <strong class="fs-4" style="color: var(--dd-primary);">${{ number_format($finalTotal, 2) }}</strong>
                     </div>
 
                     <button type="submit" form="checkout-form" class="btn btn-primary btn-lg w-100">

@@ -48,91 +48,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Order 1 - Processing -->
+                                @foreach($orders as $order)
                                 <tr>
                                     <td class="ps-4">
-                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold">#DD-2026-0458</a>
+                                        <a href="{{ route('order.detail', $order->id) }}" class="text-decoration-none fw-semibold">#ORD-{{ str_pad($order->id, 6, '0', STR_PAD_LEFT) }}</a>
                                     </td>
-                                    <td>Jan 15, 2026</td>
-                                    <td>4 items</td>
-                                    <td><strong>$58.30</strong></td>
+                                    <td>{{ $order->created_at->format('M j, Y') }}</td>
+                                    <td>{{ $order->items->count() }} items</td>
+                                    <td><strong>${{ number_format($order->total_amount, 2) }}</strong></td>
                                     <td>
-                                        <span class="badge bg-info"><i class="bi bi-hourglass-split me-1"></i>Processing</span>
+                                        @switch($order->order_status)
+                                            @case('pending')
+                                                <span class="badge bg-info"><i class="bi bi-hourglass-split me-1"></i>Pending</span>
+                                                @break
+                                            @case('Approved')
+                                                <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Approved</span>
+                                                @break
+                                            @case('cancelled')
+                                                <span class="badge bg-secondary"><i class="bi bi-x-lg me-1"></i>Cancelled</span>
+                                                @break
+                                            @default
+                                                <span class="badge bg-secondary">{{ ucfirst($order->order_status) }}</span>
+                                        @endswitch
                                     </td>
                                     <td class="text-end pe-4">
-                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-primary me-1">View</a>
-                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
-                                            Cancel
-                                        </button>
+                                        <a href="{{ route('order.detail', $order->id) }}" class="btn btn-sm btn-outline-primary me-1">View</a>
+                                        @if($order->order_status === 'delivered')
+                                            <a href="{{ route('cart') }}" class="btn btn-sm btn-outline-success">Reorder</a>
+                                        @elseif(in_array($order->order_status, ['pending', 'processing']))
+                                            <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelModal{{ $order->id }}">
+                                                Cancel
+                                            </button>
+                                        @endif
                                     </td>
                                 </tr>
-                                
-                                <!-- Order 2 - Shipped -->
-                                <tr>
-                                    <td class="ps-4">
-                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold">#DD-2026-0421</a>
-                                    </td>
-                                    <td>Jan 10, 2026</td>
-                                    <td>2 items</td>
-                                    <td><strong>$34.99</strong></td>
-                                    <td>
-                                        <span class="badge bg-primary"><i class="bi bi-truck me-1"></i>Shipped</span>
-                                    </td>
-                                    <td class="text-end pe-4">
-                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-primary me-1">View</a>
-                                        <a href="#" class="btn btn-sm btn-outline-secondary">Track</a>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Order 3 - Delivered -->
-                                <tr>
-                                    <td class="ps-4">
-                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold">#DD-2026-0398</a>
-                                    </td>
-                                    <td>Jan 5, 2026</td>
-                                    <td>3 items</td>
-                                    <td><strong>$45.50</strong></td>
-                                    <td>
-                                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Delivered</span>
-                                    </td>
-                                    <td class="text-end pe-4">
-                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-primary me-1">View</a>
-                                        <a href="{{ route('cart') }}" class="btn btn-sm btn-outline-success">Reorder</a>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Order 4 - Delivered -->
-                                <tr>
-                                    <td class="ps-4">
-                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold">#DD-2025-1245</a>
-                                    </td>
-                                    <td>Dec 28, 2025</td>
-                                    <td>1 item</td>
-                                    <td><strong>$12.99</strong></td>
-                                    <td>
-                                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Delivered</span>
-                                    </td>
-                                    <td class="text-end pe-4">
-                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-primary me-1">View</a>
-                                        <a href="{{ route('cart') }}" class="btn btn-sm btn-outline-success">Reorder</a>
-                                    </td>
-                                </tr>
-                                
-                                <!-- Order 5 - Cancelled -->
-                                <tr class="table-secondary">
-                                    <td class="ps-4">
-                                        <a href="{{ route('order.detail') }}" class="text-decoration-none fw-semibold text-muted">#DD-2025-1198</a>
-                                    </td>
-                                    <td class="text-muted">Dec 20, 2025</td>
-                                    <td class="text-muted">2 items</td>
-                                    <td class="text-muted"><strong>$27.48</strong></td>
-                                    <td>
-                                        <span class="badge bg-secondary"><i class="bi bi-x-lg me-1"></i>Cancelled</span>
-                                    </td>
-                                    <td class="text-end pe-4">
-                                        <a href="{{ route('order.detail') }}" class="btn btn-sm btn-outline-secondary">View</a>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -150,7 +100,7 @@
                     <div class="card text-center bg-light border-0">
                         <div class="card-body">
                             <i class="bi bi-box-seam fs-2" style="color: var(--dd-primary);"></i>
-                            <h3 class="mt-2 mb-0">12</h3>
+                            <h3 class="mt-2 mb-0">{{ $totalOrders }}</h3>
                             <small class="text-muted">Total Orders</small>
                         </div>
                     </div>
@@ -159,7 +109,7 @@
                     <div class="card text-center bg-light border-0">
                         <div class="card-body">
                             <i class="bi bi-truck fs-2 text-info"></i>
-                            <h3 class="mt-2 mb-0">2</h3>
+                            <h3 class="mt-2 mb-0">{{ $inProgressOrders }}</h3>
                             <small class="text-muted">In Progress</small>
                         </div>
                     </div>
@@ -168,7 +118,7 @@
                     <div class="card text-center bg-light border-0">
                         <div class="card-body">
                             <i class="bi bi-currency-dollar fs-2 text-success"></i>
-                            <h3 class="mt-2 mb-0">$523.80</h3>
+                            <h3 class="mt-2 mb-0">${{ number_format($totalSpent, 2) }}</h3>
                             <small class="text-muted">Total Spent</small>
                         </div>
                     </div>
@@ -178,23 +128,27 @@
     </div>
 </div>
 
-<!-- Cancel Order Modal -->
-<div class="modal fade" id="cancelModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Cancel Order</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to cancel this order?</p>
-                <p class="text-muted small mb-0">This action cannot be undone. You will receive a full refund within 3-5 business days.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Order</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes, Cancel</button>
+@foreach($orders as $order)
+    @if(in_array($order->order_status, ['pending', 'processing']))
+    <!-- Cancel Order Modal -->
+    <div class="modal fade" id="cancelModal{{ $order->id }}" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cancel Order #{{ $order->id }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel this order?</p>
+                    <p class="text-muted small mb-0">This action cannot be undone. You will receive a full refund within 3-5 business days.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keep Order</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes, Cancel</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    @endif
+@endforeach
 @endsection

@@ -164,24 +164,7 @@
             </button>
             
             <div class="collapse navbar-collapse" id="navbarMain">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ route('home') }}">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Categories</a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('category.show', 'groceries') }}">Groceries</a></li>
-                            <li><a class="dropdown-item" href="{{ route('category.show', 'household') }}">Household</a></li>
-                            <li><a class="dropdown-item" href="{{ route('category.show', 'personal-care') }}">Personal Care</a></li>
-                            <li><a class="dropdown-item" href="{{ route('category.show', 'beverages') }}">Beverages</a></li>
-                            <li><a class="dropdown-item" href="{{ route('category.show', 'snacks') }}">Snacks</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('category.index') }}">Shop All</a>
-                    </li>
-                </ul>
+                
                 
                 <ul class="navbar-nav">
                     @guest
@@ -237,15 +220,7 @@
                     <h5 class="mb-3"><i class="bi bi-box-seam me-2"></i>Daily Dose</h5>
                     <p class="text-white-50">Your trusted source for daily essentials. Quality products delivered to your doorstep.</p>
                 </div>
-                <div class="col-6 col-lg-2">
-                    <h6 class="mb-3">Shop</h6>
-                    <ul class="list-unstyled">
-                        <li class="mb-2"><a href="{{ route('category.show', 'groceries') }}">Groceries</a></li>
-                        <li class="mb-2"><a href="{{ route('category.show', 'household') }}">Household</a></li>
-                        <li class="mb-2"><a href="{{ route('category.show', 'personal-care') }}">Personal Care</a></li>
-                        <li class="mb-2"><a href="{{ route('category.show', 'beverages') }}">Beverages</a></li>
-                    </ul>
-                </div>
+                
                 <div class="col-6 col-lg-2">
                     <h6 class="mb-3">Account</h6>
                     <ul class="list-unstyled">

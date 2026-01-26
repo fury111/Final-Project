@@ -12,8 +12,14 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Featured Products
-        $featuredProducts = Product::with('category', 'flashSale')
+        // Carousel Products - Get latest products for carousel
+        $carouselProducts = Product::with('category')
+            ->latest()
+            ->limit(3)
+            ->get();
+
+        // Featured Products - Get latest products
+        $featuredProducts = Product::with('category')
             ->limit(4)
             ->get()
             ->map(function($product) {
@@ -21,18 +27,18 @@ class HomeController extends Controller
                     'name' => $product->name,
                     'price' => $product->price,
                     'category' => $product->category->name ?? 'Uncategorized',
-                    'image' => $product->image_path, // This will use the accessor we defined
+                    'image' => $product->image_path,
                     'slug' => $product->slug,
                     'stock' => $product->stock_quantity,
-                    'sale' => $product->flashSale ? true : false,
-                    'old_price' => $product->flashSale ? $product->price * 1.2 : null
+                    'sale' => false,
+                    'old_price' => null
                 ];
             })
             ->toArray();
 
-        // Best Sellers - Updated to use a different sorting method
-        $bestSellers = Product::with('category', 'flashSale')
-            ->orderByRaw('RAND()') // Use random ordering instead of sales_count
+        // Best Sellers - Random products
+        $bestSellers = Product::with('category')
+            ->orderByRaw('RAND()')
             ->limit(4)
             ->get()
             ->map(function($product) {
@@ -40,18 +46,18 @@ class HomeController extends Controller
                     'name' => $product->name,
                     'price' => $product->price,
                     'category' => $product->category->name ?? 'Uncategorized',
-                    'image' => $product->image_path, // This will use the accessor we defined
+                    'image' => $product->image_path,
                     'slug' => $product->slug,
                     'stock' => $product->stock_quantity,
-                    'sale' => $product->flashSale ? true : false,
-                    'old_price' => $product->flashSale ? $product->price * 1.2 : null
+                    'sale' => false,
+                    'old_price' => null
                 ];
             })
             ->toArray();
 
-        // On Sale Products
-        $onSale = Product::whereHas('flashSale')
-            ->with(['category', 'flashSale'])
+        // On Sale Products - Random products (no flash sales)
+        $onSale = Product::with('category')
+            ->orderByRaw('RAND()')
             ->limit(4)
             ->get()
             ->map(function($product) {
@@ -59,11 +65,11 @@ class HomeController extends Controller
                     'name' => $product->name,
                     'price' => $product->price,
                     'category' => $product->category->name ?? 'Uncategorized',
-                    'image' => $product->image_path, // This will use the accessor we defined
+                    'image' => $product->image_path,
                     'slug' => $product->slug,
                     'stock' => $product->stock_quantity,
-                    'sale' => true,
-                    'old_price' => $product->price * 1.2
+                    'sale' => false,
+                    'old_price' => null // No discounts
                 ];
             })
             ->toArray();
@@ -75,6 +81,7 @@ class HomeController extends Controller
         $banners = PromoBanner::where('is_active', true)->get();
 
         return view('user.home', compact(
+            'carouselProducts',
             'featuredProducts',
             'bestSellers', 
             'onSale',

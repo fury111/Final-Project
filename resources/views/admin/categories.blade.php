@@ -12,39 +12,6 @@
 </div>
 
 <div class="card shadow mb-4">
-    <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Filter Categories</h6>
-    </div>
-    <div class="card-body">
-        <form method="GET" class="row">
-            <div class="col-md-5 mb-3">
-                <label class="small font-weight-bold text-dark">Search Name or Slug</label>
-                <input type="text" class="form-control" name="search" 
-                       value="{{ request('search') }}" 
-                       placeholder="e.g. 'Electronics' or 'shoes'...">
-            </div>
-            <div class="col-md-4 mb-3">
-                <label class="small font-weight-bold text-dark">Parent Category</label>
-                <select class="form-control" name="parent">
-                    <option value="">All Categories</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}" 
-                                {{ request('parent') == $category->id ? 'selected' : '' }}>
-                            {{ $category->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-3 mb-3 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary btn-block">
-                    <i class="fas fa-search fa-sm mr-1"></i> Apply Filter
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="card shadow mb-4">
     <div class="card-header py-3 d-flex justify-content-between align-items-center">
         <h6 class="m-0 font-weight-bold text-primary">Categories Management</h6>
         <div class="text-muted small">
@@ -122,7 +89,7 @@
     <script>
         $(document).ready(function() {
             $('#dataTableCategories').DataTable({
-                "pageLength": 10,
+                "pageLength": 5,
                 "ordering": true,
                 "searching": true,
                 "paging": true

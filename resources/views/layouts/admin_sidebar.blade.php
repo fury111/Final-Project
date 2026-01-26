@@ -1,10 +1,10 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
         <div class="sidebar-brand-icon rotate-n-15">
             <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">ShopNow</div>
+        <div class="sidebar-brand-text mx-3">Daily Dose</div>
     </a>
 
     <hr class="sidebar-divider my-0">
@@ -82,7 +82,6 @@
             <div class="bg-white py-2 collapse-inner rounded shadow-sm">
                 <h6 class="collapse-header">User Roles:</h6>
                 <a class="collapse-item" href="{{ route('admin.users.index') }}">Customers</a>
-                <a class="collapse-item" href="{{ route('admin.users.create') }}">Create an Administrator</a>
             </div>
         </div>
     </li>
@@ -115,20 +114,6 @@
     </a>
 </li>
 
-<li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePromos"
-        aria-expanded="true" aria-controls="collapsePromos">
-        <i class="fas fa-fw fa-bullhorn"></i>
-        <span>Campaigns</span>
-    </a>
-    <div id="collapsePromos" class="collapse" aria-labelledby="headingPromos" data-parent="#accordionSidebar">
-        <div class="bg-white py-2 collapse-inner rounded shadow-sm">
-            <h6 class="collapse-header">Marketing:</h6>
-            <a class="collapse-item" href="{{ route('admin.promo.flashsales') }}">Flash Sales</a>
-            <a class="collapse-item" href="{{ route('admin.promo.index') }}">Promo Banners</a>
-        </div>
-    </div>
-</li>
 
 <hr class="sidebar-divider">
 

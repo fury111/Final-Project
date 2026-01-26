@@ -45,12 +45,13 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/account', [App\Http\Controllers\AccountController::class, 'update'])->name('account.update');
 
     // Addresses
-    Route::get('/addresses', [App\Http\Controllers\AddressController::class, 'index'])->name('addresses');
-    Route::get('/addresses/create', [App\Http\Controllers\AddressController::class, 'create'])->name('addresses.create');
-    Route::post('/addresses', [App\Http\Controllers\AddressController::class, 'store'])->name('addresses.store');
-    Route::get('/addresses/{id}/edit', [App\Http\Controllers\AddressController::class, 'edit'])->name('addresses.edit');
-    Route::put('/addresses/{id}', [App\Http\Controllers\AddressController::class, 'update'])->name('addresses.update');
-    Route::delete('/addresses/{id}', [App\Http\Controllers\AddressController::class, 'destroy'])->name('addresses.destroy');
+    // Addresses
+Route::get('/addresses', [App\Http\Controllers\AddressController::class, 'index'])->name('addresses');
+Route::get('/addresses/create', [App\Http\Controllers\AddressController::class, 'create'])->name('addresses.create'); // Add this line
+Route::post('/addresses', [App\Http\Controllers\AddressController::class, 'store'])->name('addresses.store');
+Route::put('/addresses/{id}', [App\Http\Controllers\AddressController::class, 'update'])->name('addresses.update');
+Route::delete('/addresses/{id}', [App\Http\Controllers\AddressController::class, 'destroy'])->name('addresses.destroy');
+Route::put('/addresses/{id}/set-default', [App\Http\Controllers\AddressController::class, 'setDefault'])->name('addresses.set-default');
 
     // Cart Management
     Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart');
@@ -58,6 +59,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cart/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{id}', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
     Route::post('/cart/clear', [App\Http\Controllers\CartController::class, 'clear'])->name('cart.clear');
+    Route::post('/cart/apply-coupon', [App\Http\Controllers\CartController::class, 'applyCoupon'])->name('cart.apply-coupon');
+    Route::post('/cart/remove-coupon', [App\Http\Controllers\CartController::class, 'removeCoupon'])->name('cart.remove-coupon');
 
     // Checkout
     Route::get('/checkout', [App\Http\Controllers\CheckoutController::class, 'index'])->name('checkout');
@@ -67,6 +70,7 @@ Route::middleware(['auth'])->group(function () {
     // Order Management
     Route::get('/orders', [App\Http\Controllers\OrderController::class, 'index'])->name('orders');
     Route::get('/order-detail/{id}', [App\Http\Controllers\OrderController::class, 'show'])->name('order.detail');
+    Route::post('/order-cancel/{id}', [App\Http\Controllers\OrderController::class, 'cancel'])->name('order.cancel');
 
     // Wishlist
     Route::get('/wishlist', function () {

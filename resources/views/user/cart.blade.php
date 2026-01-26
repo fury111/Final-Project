@@ -113,39 +113,60 @@
                         <div class="mb-4">
                             <label class="form-label small text-muted">Coupon Code</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Enter code">
-                                <button class="btn btn-outline-primary" type="button">Apply</button>
+                                @if($appliedCoupon)
+                                    <input type="text" class="form-control" value="{{ $appliedCoupon }}" readonly>
+                                    <form method="POST" action="{{ route('cart.remove-coupon') }}" style="display: inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-danger" title="Remove coupon">
+                                            <i class="bi bi-x"></i>
+                                        </button>
+                                    </form>
+                                @else
+                                    <form method="POST" action="{{ route('cart.apply-coupon') }}" style="display: flex; width: 100%;">
+                                        @csrf
+                                        <input type="text" class="form-control" name="coupon_code" placeholder="Enter code" required>
+                                        <button type="submit" class="btn btn-outline-primary">Apply</button>
+                                    </form>
+                                @endif
                             </div>
+                            @if(session('success'))
+                                <div class="text-success small mt-1">{{ session('success') }}</div>
+                            @endif
+                            @if(session('error'))
+                                <div class="text-danger small mt-1">{{ session('error') }}</div>
+                            @endif
                         </div>
 
                         <!-- Totals -->
-                        <div class="border-top pt-3">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted">Subtotal ({{ $items->sum('quantity') }} items)</span>
-                                <span>${{ number_format($subtotal, 2) }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted">Discount</span>
-                                <span class="text-success">-$0.00</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted">Shipping</span>
-                                <span class="text-success">Free</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span class="text-muted">Tax (estimated)</span>
-                                <span>${{ number_format($tax, 2) }}</span>
-                            </div>
-                            <hr>
-                            <div class="d-flex justify-content-between mb-4">
-                                <strong>Total</strong>
-                                <strong class="fs-4" style="color: var(--dd-primary);">${{ number_format($total, 2) }}</strong>
-                            </div>
+<div class="border-top pt-3">
+    <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Subtotal ({{ $items->sum('quantity') }} items)</span>
+        <span>${{ number_format($subtotal, 2) }}</span>
+    </div>
+    @if($appliedCoupon)
+        <div class="d-flex justify-content-between mb-2">
+            <span class="text-muted">Discount ({{ $discountPercentage }}%)</span>
+            <span class="text-success">-${{ number_format($discountAmount, 2) }}</span>
+        </div>
+    @endif
+    <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Shipping</span>
+        <span class="text-success">Free</span>
+    </div>
+    <div class="d-flex justify-content-between mb-2">
+        <span class="text-muted">Tax (estimated)</span>
+        <span>${{ number_format($tax, 2) }}</span>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-between mb-4">
+        <strong>Total</strong>
+        <strong class="fs-4" style="color: var(--dd-primary);">${{ number_format($finalTotal, 2) }}</strong>
+    </div>
 
-                            <a href="{{ route('checkout') }}" class="btn btn-primary btn-lg w-100">
-                                Proceed to Checkout
-                            </a>
-                        </div>
+    <a href="{{ route('checkout') }}" class="btn btn-primary btn-lg w-100">
+        Proceed to Checkout
+    </a>
+</div>
                     </div>
                 </div>
 

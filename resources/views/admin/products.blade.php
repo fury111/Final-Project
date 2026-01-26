@@ -10,53 +10,7 @@
         </a>
     </div>
 
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Filter Products</h6>
-        </div>
-        <div class="card-body">
-            <form method="GET" class="row">
-                <div class="col-md-3 mb-3">
-                    <label class="small font-weight-bold">Search</label>
-                    <input type="text" class="form-control" name="search" 
-                           value="{{ request('search') }}" 
-                           placeholder="Product name or ID...">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="small font-weight-bold">Category</label>
-                    <select class="form-control" name="category">
-                        <option value="">All Categories</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}" 
-                                    {{ request('category') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="small font-weight-bold">Stock Status</label>
-                    <select class="form-control" name="stock">
-                        <option value="">All Status</option>
-                        <option value="in_stock" {{ request('stock') == 'in_stock' ? 'selected' : '' }}>
-                            In Stock
-                        </option>
-                        <option value="low_stock" {{ request('stock') == 'low_stock' ? 'selected' : '' }}>
-                            Low Stock
-                        </option>
-                        <option value="out_of_stock" {{ request('stock') == 'out_of_stock' ? 'selected' : '' }}>
-                            Out of Stock
-                        </option>
-                    </select>
-                </div>
-                <div class="col-md-3 mb-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary btn-block">
-                        <i class="fas fa-filter fa-sm"></i> Apply Filters
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
 
     <div class="card shadow mb-4">
         <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -136,9 +90,7 @@
             </div>
 
             <div class="d-flex justify-content-between align-items-center mt-3">
-                <div class="small text-muted">
-                    Page {{ $products->currentPage() }} of {{ $products->lastPage() }}
-                </div>
+                
                 <nav aria-label="Page navigation example">
                     {{ $products->appends(request()->query())->links('pagination::bootstrap-4') }}
                 </nav>
@@ -153,7 +105,7 @@
     <script>
         $(document).ready(function() {
             $('#dataTable').DataTable({
-                "pageLength": 10,
+                "pageLength": 5,
                 "ordering": true,
                 "searching": true,
                 "paging": true
